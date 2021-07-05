@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>STEM Unicorn - Level 3</title>
+	<link rel = "stylesheet" href = "bootstrap-5.0.1-dist/css/bootstrap.min.css" type = "text/css" />
+	<link rel = "preconnect" href = "https://fonts.gstatic.com" />
+	<link rel = "stylesheet" href = "https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap" />
+	<link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+	<style>
+		* {
+			font-family: Lato, sans-serif;
+		}
+		body {
+			background-image: radial-gradient(circle, #5441cc 30%, #0b0052);
+			color: white;
+			position: relative;
+			overflow-x: hidden;
+		}
+		.btn-warning {
+			color: white;
+			background-color: #e68e00;
+			border-color: #bd7500;
+		}
+		.btn-warning:hover, .btn-warning:focus {
+			color: white;
+		}
+		#black {
+			position: fixed;
+			left: -50vw;
+			top: 0;
+			width: 200vw;
+			height: 100vh;
+			background-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent 100%);
+			z-index: 100;
+		}
+		.levelButton {
+			position: relative;
+			background-color: rgba(240, 240, 240, 0.9);
+			box-shadow: 0 0 5px 1px white;
+			border-radius: 50%;
+			width: 10vh;
+			height: 10vh;
+			padding: 0.5vh;
+			z-index: 3;
+			align-self: flex-start;
+		}
+		.levelBubble {
+			border: 5px solid orange;
+			border-radius: 50%;
+			width: 9vh;
+			height: 9vh;
+			color: black;
+			text-align: center;
+			font-size: 2rem;
+			line-height: 7.5vh;
+			font-weight: bold;
+			z-index: 3;
+		}
+		.bi {
+			color: #e3b409;
+		}
+		#banner {
+			position: relative;
+			margin: 2rem;
+			background-color: rgba(150, 150, 150, 1);
+			border: 6px solid orange;
+			border-radius: 10px;
+			max-width: 75vw;
+			text-align: center;
+		}
+		#money {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			padding: 0.5rem 1.5rem;
+			font-size: 1.2rem;
+			background-color: #57ad6b;
+			border-left: 3px solid white;
+			border-top: 3px solid white;
+			border-top-left-radius: 6px;
+			border-bottom-right-radius: 6px;
+		}
+		.info {
+			margin: 2rem;
+			background-color: rgba(240, 240, 240, 0.9);
+			border: 6px solid orange;
+			border-radius: 10px;
+			max-width: 75vw;
+			text-align: center;
+			text-align: left;
+			color: black;
+			font-size: 1.25rem;
+			min-height: 9vh;
+			max-height: 70vh;
+			overflow-y: auto;
+		}
+		#select {
+			margin: 2rem;
+			max-width: 75vw;
+			text-align: center;
+			text-align: left;
+			color: black;
+			font-size: 1.25rem;
+			max-height: 70vh;
+			overflow-y: auto;
+			display: flex;
+			justify-content: center;
+		}
+		#introduction {
+			margin: 1rem;
+			width: 100%;
+			height: 40vh;
+			text-align: center;
+			color: white;
+		}
+		textarea {
+			background-color: white;
+			margin: 2rem;
+			border: 6px solid orange;
+			border-radius: 10px;
+			max-width: 75vw;
+			text-align: center;
+			text-align: left;
+			color: black;
+			font-size: 1.25rem;
+			min-height: 55vh;
+			max-height: 70vh;
+			overflow-y: auto;
+			resize: none;
+		}
+		td {
+			padding: 1rem 1.5rem;
+		}
+		.investor {
+			min-height: 55vh;
+			outline: 1px solid red;
+			margin: 0.5rem;
+			padding: 0.5rem;
+			display: flex;
+			flex-direction: column-reverse;
+		}
+		.investor .info {
+			margin: 0;
+			padding: 0.5rem;
+			min-height: 0;
+		}
+	</style>
+	<meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<div id = "black"></div>
+	<div id = "banner" class = "p-4 d-flex justify-content-center align-items-center mx-auto">
+		<div class = "levelButton">
+			<div class = "levelBubble">3</div>
+		</div>
+		<h1 class = "mb-0 flex-grow-1">Level 3</h1>
+		<div style = "width: 10vh"></div>
+		<div id = "money">$1K</div>
+	</div>
+	<div class = "info mx-auto p-4">
+		<p>Text goes here</p>
+		<p class = "text-center" style = "margin-top: 80vh"><button class = "btn btn-warning" onclick = "sceneWrite()">Continue</button></p>
+	</div>
+	<script src = "jquery-3.6.0.min.js"></script>
+	<script src = "bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		$("#black").animate({ left: "-200vw" }, 600);
+		var page = 1;
+		function programPage(dir) {
+			page += dir;
+			if (page == 0) { page = 1; }
+			if (page == 7) { page = 6; }
+			$("#stage").html("Stage " + page);
+			$("#nav div:nth-child(2)").html(page + " of 6");
+			if (page == 6) {
+				$("body > .info > p").html("<button class = 'btn btn-warning' onclick = 'sceneQuestions()'>Continue</button>");
+			}
+		}
+		function endLevel() {
+			$("#black").hide().css("left", "-50vw").fadeIn(600);
+			setTimeout(function() {
+				window.open("dashboard.html", "_self");
+			}, 600);
+		}
+		function sceneEnd() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			setTimeout(function() {
+				$("body > .info").remove();
+				$("#select").html("<div class = 'info mx-auto p-4 my-0' style = 'width: 100% !important'><p>Text goes here</p><p class = 'text-center' style = 'margin-top: 80vh'><button class = 'btn btn-warning' onclick = 'endLevel()'>Finish</button></p></div>");
+				$("#black").animate({ left: "-200vw" }, 600);
+			}, 600);
+		}
+		function sceneQuestions() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			setTimeout(function() {
+				$("#select").html("<div class = 'info mx-auto mt-0 p-4 text-center' style = 'width: 100% !important; min-height: 55vh'><h3>Question goes here?</h3><table class = 'mx-auto mt-3'><tr><td><button class = 'btn btn-info btn-lg'>Answer</button></td><td><button class = 'btn btn-info btn-lg'>Answer</button></td></tr><tr><td><button class = 'btn btn-info btn-lg'>Answer</button></td><td><button class = 'btn btn-info btn-lg'>Answer</button></td></tr></table></div>");
+				$(".btn-info").addClass("px-4");
+				$(".btn-info").click(function() {
+					$(".btn-info").removeClass("btn-info").addClass("btn-outline-danger").attr("disabled", "true");
+					$(this).removeClass("btn-outline-danger").addClass("btn-success");
+					$("body > .select > .info").append("<p class = 'mt-2'>Explanation goes here</p>");
+					$("body > .info > p").html("<button class = 'btn btn-warning' onclick = 'sceneEnd()'>Continue</button>");
+				});
+				$("#select").addClass("mb-0");
+				$("body > .info").removeClass("mt-4").addClass("mt-0");
+				$("body > .info > p").html("Answer the question correctly for $200!");
+				$("#black").animate({ left: "-200vw" }, 600);
+			}, 600);
+		}
+		function sceneResults() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			setTimeout(function() {
+				$("#introduction").replaceWith("<div class = 'investor'></div><div class = 'investor'></div><div class = 'investor'></div><div class = 'investor'></div>");
+				$(".investor").addClass("flex-fill");
+				$(".investor").append("<div class = 'info text-center'>Result</div>")
+				$("#black").animate({ left: "-200vw" }, 600);
+				$("table").replaceWith("<div class = 'info mx-auto mt-4 p-2 text-center d-flex flex-column justify-content-center'><p class = 'mb-0'><button class = 'btn btn-warning' onclick = 'sceneQuestions()'>Continue</button></div>")
+			}, 600);
+		}
+		function sceneTalk() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			setTimeout(function() {
+				$("#introduction").html("<div class = 'info mx-auto mt-0 p-2 text-center' style = 'position: relative; top: -2vh; z-index: 3; line-height: 5vh'>Question goes here</div>")
+				$("#black").animate({ left: "-200vw" }, 600);
+				$("table").replaceWith("<table class = 'mx-auto mt-3'><tr><td><button class = 'btn btn-info btn-lg'>Answer</button></td><td><button class = 'btn btn-info btn-lg'>Answer</button></td></tr><tr><td><button class = 'btn btn-info btn-lg'>Answer</button></td><td><button class = 'btn btn-info btn-lg'>Answer</button></td></tr></table>");
+				$(".btn-info").addClass("px-4");
+				$(".btn-info").click(function() {
+					$(".btn-info").removeClass("btn-info").addClass("btn-outline-info").attr("disabled", "true");
+					$(this).removeClass("btn-outline-info").addClass("btn-info");
+					setTimeout(sceneResults, 2000);
+				});
+			}, 600);
+		}
+		function scenePitch() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			setTimeout(function() {
+				$("textarea").replaceWith("<div id = 'select' class = 'mx-auto p-1'><div id = 'introduction'><h2 class = 'mt-2'>Graphic displayed here</h2></div></div>");
+				$(".info").replaceWith("<table class = 'mx-auto mt-3'><tr><td><button class = 'btn btn-info btn-lg'>Answer</button></td><td><button class = 'btn btn-info btn-lg'>Answer</button></td></tr><tr><td><button class = 'btn btn-info btn-lg'>Answer</button></td><td><button class = 'btn btn-info btn-lg'>Answer</button></td></tr></table>");
+				$(".btn-info").addClass("px-4");
+				$(".btn-info").click(function() {
+					$(".btn-info").removeClass("btn-info").addClass("btn-outline-info").attr("disabled", "true");
+					$(this).removeClass("btn-outline-info").addClass("btn-info");
+					setTimeout(sceneTalk, 2000);
+				});
+				$("#black").animate({ left: "-200vw" }, 600);
+			}, 600);
+		}
+		function sceneWrite() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			setTimeout(function() {
+				$(".info").replaceWith("<textarea class = 'mx-auto p-4 mb-0 d-block' style = 'width: 100% !important' placeholder = 'Pitch goes here...'></textarea>");
+				$("textarea").on("input", function() {
+					$("body > .info > p").html("<button class = 'btn btn-warning' onclick = 'scenePitch()'>Submit</button>");
+				});
+				$("body").append("<div class = 'info mx-auto mt-4 p-2 text-center d-flex flex-column justify-content-center'><p class = 'mb-0'>Write your pitch here! Your teacher will be able to give you feedback on it later.</p></div>");
+				$("#black").animate({ left: "-200vw" }, 600);
+			}, 600);
+		}
+	</script>
+</body>
+</html>

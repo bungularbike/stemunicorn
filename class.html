@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>STEM Unicorn - Register</title>
+	<link rel = "stylesheet" href = "bootstrap-5.0.1-dist/css/bootstrap.min.css" type = "text/css" />
+	<link rel = "preconnect" href = "https://fonts.gstatic.com" />
+	<link rel = "stylesheet" href = "https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap" />
+	<style>
+		* {
+			font-family: Lato, sans-serif;
+		}
+		body {
+			background-image: radial-gradient(circle, #5441cc 30%, #0b0052);
+			color: white;
+			height: 100vh;
+		}
+		#registerPanel {
+			background-color: rgba(120, 120, 120, 0.5);
+			border-radius: 5px;
+			min-width: 350px;
+			max-width: 30vw;
+		}
+		.form-floating * { 
+			color: #212529;
+		}
+		.btn-warning {
+			color: white;
+			background-color: #e68e00;
+			border-color: #bd7500;
+		}
+		.btn-warning:hover, .btn-warning:focus {
+			color: white;
+		}
+	</style>
+	<meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body class = "d-flex flex-column justify-content-center align-items-center">
+	<div id = "registerPanel" class = "px-5 py-4 text-center my-auto">
+		<h5 class = "display-5">STEM Unicorn</h5>
+		<hr>
+		<p><b>One last step!</b><br>Please use the class code given to you by your teacher to join your class.</p>
+		<div class = "form-floating mb-3">
+			<input type = "text" class = "form-control" id = "registerClass" placeholder = " " size = "6">
+			<label for = "loginEmail">Class code</label>
+		</div>
+		<p class = "mt-3 mb-0"><button class = "btn btn-warning">Join</button></p>
+	</div>
+	<script src = "jquery-3.6.0.min.js"></script>
+	<script src = "bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		var joined = false;
+		$("button").click(function() {
+			if (!joined) {
+				joined = true;
+				$("p:first-of-type").html("<b>Is this your class?</b><br><p>Class name<br>Teacher<br>School");
+				$(".form-floating").remove();
+				$("button").html("Yes");
+				$("button").click(function() {
+					window.open("dashboard.html", "_self");
+				});
+				$("#registerPanel > p:last-of-type").append("<button class = 'btn btn-secondary ms-2'>No</button>");
+			}
+		});
+	</script>
+</body>
+</html>

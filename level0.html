@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>STEM Unicorn - Tutorial</title>
+	<link rel = "stylesheet" href = "bootstrap-5.0.1-dist/css/bootstrap.min.css" type = "text/css" />
+	<link rel = "preconnect" href = "https://fonts.gstatic.com" />
+	<link rel = "stylesheet" href = "https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap" />
+	<link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+	<style>
+		* {
+			font-family: Lato, sans-serif;
+		}
+		body {
+			background-image: radial-gradient(circle, #5441cc 30%, #0b0052);
+			color: white;
+			position: relative;
+		}
+		.btn-warning {
+			color: white;
+			background-color: #e68e00;
+			border-color: #bd7500;
+		}
+		.btn-warning:hover, .btn-warning:focus {
+			color: white;
+		}
+		#black {
+			position: fixed;
+			left: -50vw;
+			top: 0;
+			width: 200vw;
+			height: 100vh;
+			background-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent 100%);
+			z-index: 100;
+		}
+		.levelButton {
+			position: relative;
+			background-color: rgba(240, 240, 240, 0.9);
+			box-shadow: 0 0 5px 1px white;
+			border-radius: 50%;
+			width: 10vh;
+			height: 10vh;
+			padding: 0.5vh;
+			z-index: 3;
+			align-self: flex-start;
+		}
+		.levelBubble {
+			border: 5px solid orange;
+			border-radius: 50%;
+			width: 9vh;
+			height: 9vh;
+			color: black;
+			text-align: center;
+			font-size: 2rem;
+			line-height: 7.5vh;
+			font-weight: bold;
+			z-index: 3;
+		}
+		.bi {
+			color: #e3b409;
+		}
+		#banner {
+			margin: 2rem;
+			background-color: rgba(150, 150, 150, 1);
+			border: 6px solid orange;
+			border-radius: 10px;
+			max-width: 75vw;
+			text-align: center;
+		}
+		#info {
+			margin: 2rem;
+			background-color: rgba(240, 240, 240, 0.9);
+			border: 6px solid orange;
+			border-radius: 10px;
+			max-width: 75vw;
+			text-align: center;
+			text-align: left;
+			color: black;
+			font-size: 1.25rem;
+			min-height: 9vh;
+			max-height: 70vh;
+			overflow-y: auto;
+		}
+		#select {
+			margin: 2rem;
+			max-width: 75vw;
+			text-align: center;
+			text-align: left;
+			color: black;
+			font-size: 1.25rem;
+			max-height: 70vh;
+			overflow-y: auto;
+			display: flex;
+			justify-content: center;
+		}
+		.character {
+			position: relative;
+			display: inline-block;
+			width: 16vw;
+			height: 50vh;
+			margin: 1rem;
+		}
+		.candidate {
+			height: 45vh !important;
+		}
+		.characterIcon {
+			border-radius: 12px;
+			width: 100%;
+			height: 100%;
+			cursor: pointer;
+		}
+		.characterIcon:hover {
+			background-color: rgba(150, 150, 150, 0.3);
+		}
+		.characterIcon.active, .characterIcon:active {
+			background-color: rgba(150, 150, 150, 0.5);
+		}
+		.characterName {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			color: white;
+			text-align: center;
+		}
+		.characterPlus {
+			position: absolute;
+			top: 2vh;
+			right: 2vh;
+			width: 4vh;
+			height: 4vh;
+			background-color: white;
+			border-radius: 8px;
+			text-align: center;
+			font-size: 2rem;
+			font-weight: bold;
+			line-height: 3.5vh;
+			vertical-align: middle;
+			cursor: pointer;
+		}
+		.characterPlus:hover {
+			background-color: rgba(255, 255, 255, 0.8);
+		}
+		.characterPlus:active {
+			background-color: rgba(230, 230, 230, 0.8);
+		}
+		.characterDescription {
+			position: absolute;
+			top: 8vh;
+			left: 2vh;
+			width: calc(16vw - 4vh);
+			height: 0;
+			background-color: rgba(160, 160, 160, 0.7);
+			border-radius: 5px;
+			overflow-y: auto;
+			font-size: 1rem;
+		}
+		#introduction {
+			margin: 1rem;
+			width: 100%;
+			height: 50vh;
+			text-align: center;
+			color: white;
+		}
+		#companyName {
+			background-color: transparent;
+			border: none;
+			border-bottom: 3px solid white;
+			color: white;
+			font-size: 2rem;
+			min-width: 25vw;
+			margin-top: 4rem;
+			text-align: center;
+		}
+		#companyName:focus {
+			outline: none;
+		}
+		#selector {
+			width: 100%;
+			color: white;
+		}
+		#prev, #next {
+			margin: 0 2rem;
+			font-size: 2rem;
+			cursor: pointer;
+		}
+		#prev:hover, #next:hover {
+			text-shadow: 0 0 3px white;
+		}
+		#prev:active, #next:active {
+			color: rgba(255, 255, 255, 0.6);
+		}
+	</style>
+	<meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<div id = "black"></div>
+	<div id = "banner" class = "p-4 d-flex justify-content-center align-items-center mx-auto">
+		<div class = "levelButton">
+			<div class = "levelBubble"><i class = 'bi bi-star-fill'></i></div>
+		</div>
+		<h1 class = "mb-0 flex-grow-1">Tutorial</h1>
+		<div style = "width: 10vh"></div>
+	</div>
+	<div id = "info" class = "mx-auto p-4">
+		<p>Text goes here</p>
+		<p class = "text-center" style = "margin-top: 80vh"><button class = "btn btn-warning" onclick = "sceneCharacters()">Continue</button></p>
+	</div>
+	<script src = "jquery-3.6.0.min.js"></script>
+	<script src = "bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		$("#black").animate({ left: "-200vw" }, 600);
+		var selectedCharacter = null;
+		var toggledCharacters;
+		var page = 0;
+		var team = ["CFO (Chief Financial Officer)", "COO (Chief Operating Officer)", "CTO (Chief Technology Officer)"];
+		function selectCharacter(char) {
+			$(".characterIcon.active").removeClass("active");
+			selectedCharacter = char;
+			$("#character_" + char + " .characterIcon").addClass("active");
+			$("#info p").html("<button class = 'btn btn-warning' onclick = 'sceneIntroduction()'>Confirm</button>");
+		}
+		function toggleDescription(char) {
+			if (!toggledCharacters[char]) {
+				$("#character_" + char + " .characterPlus").html("-");
+				$("#character_" + char + " .characterDescription").animate({ height: "32vh" });
+			} else {
+				$("#character_" + char + " .characterPlus").html("+");
+				$("#character_" + char + " .characterDescription").animate({ height: 0 });
+			}
+			toggledCharacters[char] = !toggledCharacters[char];
+		}
+		function switchPage(dir) {
+			page += dir;
+			if (page == 3) { page = 0; }
+			if (page == -1) { page = 2; }
+			$("#selector div:not(#prev, #next)").html(team[page]);
+			toggledCharacters = [];
+			$("#select .candidate").remove();
+			for (var i = 0; i < 3; i++) {
+				$("#select").append("<div id = 'candidate_" + i + "' class = 'character candidate'><div class = 'characterIcon' onclick = 'selectCandidate(" + i + ")'></div><div class = 'characterPlus' onclick = 'toggleResume(" + i + ")'>+</div><div class = 'characterDescription'><p class = 'm-3'>Text goes here</p></div><div class = 'characterName p-2 h3'>Candidate</div></div>");
+			}
+			if (selectedCharacter[page] != null) {
+				$("#candidate_" + selectedCharacter[page] + " .characterIcon").addClass("active");
+			}
+		}
+		function selectCandidate(char) {
+			$(".characterIcon.active").removeClass("active");
+			selectedCharacter[page] = char;
+			$("#candidate_" + char + " .characterIcon").addClass("active");
+			if (selectedCharacter.indexOf(null) == -1) {
+				$("#info p").html("<button class = 'btn btn-warning' onclick = 'sceneEnd()'>Confirm</button>");
+			}
+		}
+		function toggleResume(char) {
+			if (!toggledCharacters[char]) {
+				$("#candidate_" + char + " .characterPlus").html("-");
+				$("#candidate_" + char + " .characterDescription").animate({ height: "28vh" });
+			} else {
+				$("#candidate_" + char + " .characterPlus").html("+");
+				$("#candidate_" + char + " .characterDescription").animate({ height: 0 });
+			}
+			toggledCharacters[char] = !toggledCharacters[char];
+		}
+		function endLevel() {
+			$("#black").hide().css("left", "-50vw").fadeIn(600);
+			setTimeout(function() {
+				window.open("dashboard.html", "_self");
+			}, 600);
+		}
+		function sceneEnd() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			setTimeout(function() {
+				$("#select").remove();
+				$("#info").remove();
+				$("body").append("<div id = 'info' class = 'mx-auto p-4'><p>Text goes here</p><p class = 'text-center' style = 'margin-top: 80vh'><button class = 'btn btn-warning' onclick = 'endLevel()'>Finish</button></p></div>");
+				$("#black").animate({ left: "-200vw" }, 600);
+			}, 600);
+		}
+		function sceneTeam() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			setTimeout(function() {
+				selectedCharacter = [null, null, null];
+				toggledCharacters = [false, false, false];
+				$("#select").addClass("flex-wrap");
+				$("#select").html("<div id = 'selector' class = 'd-flex justify-content-center align-items-center text-center'><div id = 'prev' onclick = 'switchPage(-1)'><</div><div style = 'min-width: 30vw'>CFO (Chief Financial Officer)</div><div id = 'next' onclick = 'switchPage(1)'>></div></div>");
+				for (var i = 0; i < 3; i++) {
+					$("#select").append("<div id = 'candidate_" + i + "' class = 'character candidate'><div class = 'characterIcon' onclick = 'selectCandidate(" + i + ")'></div><div class = 'characterPlus' onclick = 'toggleResume(" + i + ")'>+</div><div class = 'characterDescription'><p class = 'm-3'>Text goes here</p></div><div class = 'characterName p-2 h3'>Candidate</div></div>");
+				}
+				$("#info p").html("Please select a candidate to serve as your CFO, COO, and CTO.");
+				$("#black").animate({ left: "-200vw" }, 600);
+			}, 600);
+		}
+		function sceneCompany() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			setTimeout(function() {
+				$("#introduction").html("<p><input type = 'text' id = 'companyName'></p>");
+				$("#banner").css("visibility", "");
+				$("#info p").html("<button class = 'btn btn-warning' onclick = 'sceneTeam()'>Continue</button>");
+				$("#black").animate({ left: "-200vw" }, 600);
+			}, 600);
+		}
+		function sceneIntroduction() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			setTimeout(function() {
+				$("#select").html("<div id = 'introduction'><h2 class = 'mt-2'>Animation goes here</h2></div>");
+				$("#banner").css("visibility", "hidden");
+				$("#info p").html("<button class = 'btn btn-warning' onclick = 'sceneCompany()'>Continue</button>");
+				$("#black").animate({ left: "-200vw" }, 600);
+			}, 600);
+		}
+		function sceneCharacters() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			toggledCharacters = [];
+			setTimeout(function() {
+				$("#info").replaceWith("<div id = 'select' class = 'mx-auto p-1'></div>");
+				for (var i = 0; i < 4; i++) {
+					toggledCharacters.push(false);
+					$("#select").append("<div id = 'character_" + i + "' class = 'character'><div class = 'characterIcon' onclick = 'selectCharacter(" + i + ")'></div><div class = 'characterPlus' onclick = 'toggleDescription(" + i + ")'>+</div><div class = 'characterDescription'><p class = 'm-3'>Text goes here</p></div><div class = 'characterName p-2 h3'>Character</div></div>");
+				}
+				$("body").append("<div id = 'info' class = 'mx-auto p-2 text-center d-flex flex-column justify-content-center'><p class = 'mb-0'>Please select a character.</p></div>");
+				$("#black").animate({ left: "-200vw" }, 600);
+			}, 600);
+		}
+	</script>
+</body>
+</html>

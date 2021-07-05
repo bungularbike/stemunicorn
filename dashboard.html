@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>STEM Unicorn - Dashboard</title>
+	<link rel = "stylesheet" href = "bootstrap-5.0.1-dist/css/bootstrap.min.css" type = "text/css" />
+	<link rel = "preconnect" href = "https://fonts.gstatic.com" />
+	<link rel = "stylesheet" href = "https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap" />
+	<link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+	<style>
+		* {
+			font-family: Lato, sans-serif;
+		}
+		body {
+			color: white;
+			height: 100vh;
+		}
+		body > div {
+			height: 100%;
+			overflow-y: auto;
+		}
+		#levelContainer {
+			background-image: radial-gradient(circle, #5441cc 30%, #0b0052);
+			width: 67%
+		}
+		#infoContainer {
+			background-image: radial-gradient(circle, #ffd37a 30%, #ffaa00);
+			width: 33%;
+		}
+		.nav-link {
+			color: white;
+		}
+		.nav-link:hover, .nav-link:focus {
+			background-color: rgba(230, 230, 230, 0.4) !important;
+			color: white;
+		}
+		.nav-link.active {
+			background-color: rgba(230, 230, 230, 0.6) !important;
+		}
+		.levelButton {
+			position: absolute;
+			background-color: rgba(240, 240, 240, 0.9);
+			box-shadow: 0 0 5px 1px white;
+			border-radius: 50%;
+			width: 10vh;
+			height: 10vh;
+			padding: 0.5vh;
+			cursor: pointer;
+			z-index: 3;
+		}
+		.levelBubble {
+			border: 5px solid orange;
+			border-radius: 50%;
+			width: 9vh;
+			height: 9vh;
+			color: black;
+			text-align: center;
+			font-size: 2rem;
+			line-height: 7.5vh;
+			font-weight: bold;
+			z-index: 3;
+		}
+		.levelButton:hover {
+			background-color: rgba(210, 210, 210, 0.9);
+		}
+		.levelButton:active {
+			background-color: rgba(190, 190, 190, 0.9);
+		}
+		.bi {
+			color: #e3b409;
+		}
+		.connectorContainer {
+			position: absolute;
+			bottom: 12vh;
+			z-index: 2;
+		}
+		.connectorLine {
+			position: relative;
+			background-color: orange;
+			height: 5px;
+			width: 25vw;
+			z-index: 2;
+		}
+		#levelDescription {
+			position: absolute;
+			background-color: white;
+			border-radius: 5px;
+			min-height: 5vh;
+			min-width: 20vw;
+			color: black;
+			padding: 1rem;
+			text-align: center;
+			z-index: 5;
+		}
+		#levelTip {
+			position: absolute;
+			height: 0;
+			width: 0;
+			border-top: 12px solid transparent;
+			border-bottom: 12px solid transparent;
+			z-index: 5;
+		}
+		.levelActive {
+			z-index: 10;
+		}
+		.btn-warning {
+			color: white;
+			background-color: #e68e00;
+			border-color: #bd7500;
+		}
+		#black {
+			position: fixed;
+			left: -50vw;
+			top: 0;
+			width: 200vw;
+			height: 100vh;
+			background-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent 100%);
+			z-index: 100;
+		}
+	</style>
+	<meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<div id = "black"></div>
+	<div id = "levelContainer" class = "float-start" style = "position: absolute">
+	</div>
+	<div id = "infoContainer" class = "float-end">
+		<ul class = "nav nav-pills nav-fill p-2">
+			<li class = "nav-item">
+				<a class = "nav-link active" data-bs-toggle = "tab" data-bs-target = "#infoProfile" href = "#">Profile</a>
+			</li>
+			<li class = "nav-item mx-2">
+				<a class = "nav-link" data-bs-toggle = "tab" data-bs-target = "#infoLeaderboard" href = "#">Leaderboard</a>
+			</li>
+			<li class = "nav-item">
+				<a class = "nav-link" href = "login.html">Log out</a>
+			</li>
+		</ul>
+		<div class = "tab-content" id = "infoPanel">
+			<div class = "tab-pane show active p-4" id = "infoProfile">
+				<div class = "d-flex flex-row align-items-center">
+					<div>
+						<h6 class = "mb-0">Hello,</h6>
+						<p class = "mb-0"><span class = "display-4">Jack</span></p>
+					</div>
+					<div class = "ms-auto text-center">
+						<p class = "mb-0">Class<br>Teacher<br>School</p>
+					</div>
+				</div>
+				<div class = "my-4 mx-auto" style = "width: 18vw; height: 27vw; outline: 1px solid red"></div>
+				<p class = "text-center"><button class = "btn btn-outline-light fw-bold mt-2">Edit avatar</button></p>
+				<p class = "text-center mt-4 mb-0">Money:<br><span class = "h1">$10K</span></p>
+			</div>
+			<div class = "tab-pane p-3" id = "infoLeaderboard">
+				<table class = "table table-borderless text-center" style = "color: white">
+					<thead>
+						<tr>
+							<th>Rank</th>
+							<th>Name</th>
+							<th>Money</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>Jack R.</td>
+							<td>$10K</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<script src = "jquery-3.6.0.min.js"></script>
+	<script src = "bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		var levels = ["<i class = 'bi bi-star-fill'></i>", "1", "2", "3", "<i class = 'bi bi-lock-fill'></i>"];
+		for (var i = 0; i < 5; i++) {
+			var bottom = ((i + 1) * 15);
+			if (i % 2 != 1) {
+				$("#levelContainer").append("<div class = 'levelButton' style = 'bottom: " + bottom + "vh; left: 15vw' id = 'levelButton_" + i + "'><div class = 'levelBubble' onclick = 'levelBubble(" + i + ")'>" + levels[i] + "</div><div class = 'connectorContainer' style = 'left: 11vh'><div class = 'connectorLine' style = 'transform: rotate(-15deg)'></div></div></div>");
+			} else {
+				$("#levelContainer").append("<div class = 'levelButton' style = 'bottom: " + bottom + "vh; right: 15vw' id = 'levelButton_" + i + "'><div class = 'levelBubble' onclick = 'levelBubble(" + i + ")'>" + i + "</div><div class = 'connectorContainer' style = 'right: 11vh'><div class = 'connectorLine' style = 'transform: rotate(15deg)'></div></div></div>");
+			}
+			$("#levelButton_4 .connectorContainer").remove();
+		}
+		var bubble = null;
+		function levelBubble(num) {
+			$("#levelTip").remove();
+			$("#levelDescription").remove();
+			if (bubble != num) {
+				$(".levelActive").removeClass("levelActive");
+				$("#levelButton_" + num).addClass("levelActive");
+				switch (num) {
+					case 0:
+						$("#levelButton_0").append("<div id = 'levelTip' style = 'bottom: calc(3vh + 6px); left: 6.5vw; border-right: 12px solid white'></div>");
+						$("#levelButton_0").append("<div id = 'levelDescription' style = 'bottom: calc(3vh - 12px); left: calc(6.5vw + 12px)'><h5>Tutorial</h5><hr><p class = 'mb-0'>In the tutorial, you'll select your company founder (who you'll play as) and your team. You'll also be introduced to the problem you're trying to solve.<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						break;
+					case 1:
+						$("#levelButton_1").append("<div id = 'levelTip' style = 'bottom: calc(3vh + 6px); right: 6.5vw; border-left: 12px solid white'></div>");
+						$("#levelButton_1").append("<div id = 'levelDescription' style = 'bottom: calc(3vh - 12px); right: calc(6.5vw + 12px)'><h5>Level 1</h5><hr><p class = 'mb-0'>In this level, you'll learn how to manage your budget and allocate funds between different types of resources.<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						break;
+					case 2:
+						$("#levelButton_2").append("<div id = 'levelTip' style = 'bottom: calc(3vh); left: 6.5vw; border-right: 12px solid white'></div>");
+						$("#levelButton_2").append("<div id = 'levelDescription' style = 'bottom: -10vh; left: calc(6.5vw + 12px)'><h5>Level 2</h5><hr><p class = 'mb-0'>In this level, you'll begin designing and building your solution based on the capital that you obtained in the previous level.<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						break;
+					case 3:
+						$("#levelButton_3").append("<div id = 'levelTip' style = 'top: calc(3vh + 6px); right: 6.5vw; border-left: 12px solid white'></div>");
+						$("#levelButton_3").append("<div id = 'levelDescription' style = 'top: calc(3vh - 12px); right: calc(6.5vw + 12px)'><h5>Level 3</h5><hr><p class = 'mb-0'>In this level, you'll pitch your current solution to investors and try to gain funding from them to continue growing your company!<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						break;
+					case 4:
+						$("#levelButton_4").append("<div id = 'levelTip' style = 'top: calc(3vh + 6px); left: 6.5vw; border-right: 12px solid white'></div>");
+						$("#levelButton_4").append("<div id = 'levelDescription' style = 'top: calc(3vh - 12px); left: calc(6.5vw + 12px)'><h5>Locked!</h5><hr><p class = 'mb-0'>Future levels coming soon...</div>");
+						break;
+				}
+				$("#levelDescription button").click(function() {
+					$("#black").hide().css("left", "-50vw").fadeIn(600);
+					setTimeout(function() { window.open("level" + num + ".html", "_self") }, 1000);
+				});
+				bubble = num;
+			} else {
+				bubble = null;
+			}
+		}
+		$("#black").animate({ left: "-200vw" }, 600);
+	</script>
+</body>
+</html>

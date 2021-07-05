@@ -1,0 +1,223 @@
+{
+	"cash": 1000,
+	"characters": [
+		{
+			"name": "",
+			"description": "",
+			"avatar": "",
+			"attributes": {}
+		},
+		{
+			"name": "",
+			"description": "",
+			"avatar": "",
+			"attributes": {}
+		},
+		{
+			"name": "",
+			"description": "",
+			"avatar": "",
+			"attributes": {}
+		},
+		{
+			"name": "",
+			"description": "",
+			"avatar": "",
+			"attributes": {}
+		}
+	],
+	"dashboard": [
+		"",
+		"",
+		"",
+		""	
+	],
+	"tutorial": {
+		"start": "",
+		"positions": [
+			{
+				"title": "Chief Financial Officer",
+				"abbrev": "CFO",
+				"candidates": [
+					{
+						"name": "",
+						"description": "",
+						"avatar": ""
+					},
+					{
+						"name": "",
+						"description": "",
+						"avatar": ""
+					},
+					{
+						"name": "",
+						"description": "",
+						"avatar": ""
+					}
+				]
+			},
+			{
+				"title": "Chief Technology Officer",
+				"abbrev": "CTO",
+				"candidates": [
+					{
+						"name": "",
+						"description": "",
+						"avatar": ""
+					},
+					{
+						"name": "",
+						"description": "",
+						"avatar": ""
+					},
+					{
+						"name": "",
+						"description": "",
+						"avatar": ""
+					}
+				]
+			},
+			{
+				"title": "Chief Operating Officer",
+				"abbrev": "COO",
+				"candidates": [
+					{
+						"name": "",
+						"description": "",
+						"avatar": ""
+					},
+					{
+						"name": "",
+						"description": "",
+						"avatar": ""
+					},
+					{
+						"name": "",
+						"description": "",
+						"avatar": ""
+					}
+				]
+			},
+		],
+		"end": ""
+	},
+	"level1": {
+		"start": "",
+		"categories": [
+			{
+				"name": "Capital",
+				"description": "Engines, wheels...",
+				"color": "#0030bf",
+				"upgrades": [
+					{
+						"name": "",
+						"price": 100,
+						"max": 1
+					},
+					{
+						"name": "",
+						"price": 100,
+						"max": 1
+					},
+					{
+						"name": "",
+						"price": 100,
+						"max": 1
+					}
+				]
+			},
+			{
+				"name": "Staff",
+				"description": "Education, benefits...",
+				"color": "#7000e0",
+				"upgrades": [
+					{
+						"name": "",
+						"price": 100,
+						"max": 1
+					},
+					{
+						"name": "",
+						"price": 100,
+						"max": 1
+					},
+					{
+						"name": "",
+						"price": 100,
+						"max": 1
+					}
+				]
+			},
+			{
+				"name": "Connections",
+				"description": "Investors, mentors...",
+				"color": "#00dfeb",
+				"upgrades": [
+					{
+						"name": "",
+						"price": 100,
+						"max": 1
+					},
+					{
+						"name": "",
+						"price": 100,
+						"max": 1
+					},
+					{
+						"name": "",
+						"price": 100,
+						"max": 1
+					}
+				]
+			}
+		],
+		"questions": [
+			{
+				"prompt": "",
+				"choices": [
+					"",
+					"",
+					"",
+					""
+				],
+				"correct": 0,
+				"reward": 200
+			}
+		],
+		"end": ""
+	},
+	"level2": {
+		"start": "",
+		"questions": [
+			{
+				"prompt": "",
+				"choices": [
+					"",
+					"",
+					"",
+					""
+				],
+				"correct": 0,
+				"reward": 200
+			}
+		],
+		"end": ""
+	},
+	"level3": {
+		"start": "",
+		"questions": [
+			{
+				"prompt": "",
+				"choices": [
+					"",
+					"",
+					"",
+					""
+				],
+				"correct": 0,
+				"reward": 200
+			}
+		],
+		"end": ""
+	}
+}
