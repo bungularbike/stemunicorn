@@ -33,25 +33,27 @@
 		""	
 	],
 	"tutorial": {
-		"start": "",
+		"start": "<p>Welcome to STEM Unicorn! There are 3 objectives for this game:</p><ul><li>Learn about entrepreneurship</li><li>Learn about STEM</li><li>Have Fun!</li></ul><p>In this game, you will be able to be a virtual entrepreneur starting a STEM startup. The aim is to become a unicorn - a 1 billion dollar company. Each decision will impact the next level, so choose carefully!</p><br><p>What is a startup?:<br>A startup is a young company founded by one or more entrepreneurs to develop a unique product or service and bring it to market.</p><p>What is the difference between a startup and a large company?:<br>A startup is a temporary organization designed to search for a repeatable and scalable business model. In contrast, a large company executes - sells a product or service in exchange for revenue and profit - with an established business model.</p><p>Why do most startups fail?:<br>Most startups fail because they fail to make something someone wants to buy from them.</p>",
+		"mid": "<p>A chief technology officer (CTO) is the highest technology executive position within a company and leads the technology or engineering department. They develop policies and procedures and use technology to enhance products and services that focus on external customers.</p><p>A chief financial officer (CFO) is the senior executive responsible for managing the financial actions of a company. The CFO's duties include tracking cash flow and financial planning as well as analyzing the company's financial strengths and weaknesses and proposing corrective actions.</p><p>The chief operating officer (COO) is a senior executive tasked with overseeing the day-to-day administrative and operational functions of a business. The COO typically reports directly to the chief executive officer (CEO) and is considered to be second in the chain of command.</p>",
 		"positions": [
 			{
 				"title": "Chief Financial Officer",
 				"abbrev": "CFO",
+				"metrics": ["Experience", "Work Ethic", "Smarts", "Communication", "Creativity"],
 				"candidates": [
 					{
-						"name": "",
-						"description": "",
+						"name": "Lena",
+						"stats": [1, 3, 10, 7, 5],
 						"avatar": ""
 					},
 					{
 						"name": "",
-						"description": "",
+						"stats": [0, 0, 0, 0, 0],
 						"avatar": ""
 					},
 					{
 						"name": "",
-						"description": "",
+						"stats": [0, 0, 0, 0, 0],
 						"avatar": ""
 					}
 				]
@@ -59,20 +61,21 @@
 			{
 				"title": "Chief Technology Officer",
 				"abbrev": "CTO",
+				"metrics": ["Experience", "Work Ethic", "Smarts", "Communication", "Creativity"],
 				"candidates": [
 					{
 						"name": "",
-						"description": "",
+						"stats": [0, 0, 0, 0, 0],
 						"avatar": ""
 					},
 					{
 						"name": "",
-						"description": "",
+						"stats": [0, 0, 0, 0, 0],
 						"avatar": ""
 					},
 					{
 						"name": "",
-						"description": "",
+						"stats": [0, 0, 0, 0, 0],
 						"avatar": ""
 					}
 				]
@@ -80,24 +83,25 @@
 			{
 				"title": "Chief Operating Officer",
 				"abbrev": "COO",
+				"metrics": ["Experience", "Work Ethic", "Smarts", "Communication", "Creativity"],
 				"candidates": [
 					{
 						"name": "",
-						"description": "",
+						"stats": [0, 0, 0, 0, 0],
 						"avatar": ""
 					},
 					{
 						"name": "",
-						"description": "",
+						"stats": [0, 0, 0, 0, 0],
 						"avatar": ""
 					},
 					{
 						"name": "",
-						"description": "",
+						"stats": [0, 0, 0, 0, 0],
 						"avatar": ""
 					}
 				]
-			},
+			}
 		],
 		"end": ""
 	},

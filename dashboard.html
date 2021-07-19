@@ -148,7 +148,7 @@
 				</div>
 				<div class = "my-4 mx-auto" style = "width: 18vw; height: 27vw; outline: 1px solid red"></div>
 				<p class = "text-center"><button class = "btn btn-outline-light fw-bold mt-2">Edit avatar</button></p>
-				<p class = "text-center mt-4 mb-0">Money:<br><span class = "h1">$10K</span></p>
+				<p class = "text-center mt-4 mb-0">Money:<br><span class = "h1 money">$10K</span></p>
 			</div>
 			<div class = "tab-pane p-3" id = "infoLeaderboard">
 				<table class = "table table-borderless text-center" style = "color: white">
@@ -163,7 +163,7 @@
 						<tr>
 							<td>1</td>
 							<td>Jack R.</td>
-							<td>$10K</td>
+							<td class = "money">$10K</td>
 						</tr>
 					</tbody>
 				</table>
@@ -173,6 +173,38 @@
 	<script src = "jquery-3.6.0.min.js"></script>
 	<script src = "bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"></script>
 	<script>
+		function toPlaces(n, x, q = false) {
+			return (((q && n > 0) ? "+" : 0) + Math.round((n + Number.EPSILON) * (10 ** x)) / (10 ** x));
+		}
+		function toShort(z, x, q = false) {
+			if (Math.abs(z) < 1000) {
+				return toPlaces(z, 0);
+			} else {
+				var n = toPlaces(z, x);
+				if (z < 0) { n = -1 * z }
+				x = Math.pow(10, x);
+			    var a = ["K", "M", "B", "T"];
+			    for (var i = a.length - 1; i >= 0; i--) {
+			        var s = Math.pow(10, (i + 1) * 3);
+			        if (s <= n) {
+			             n = Math.round(n * x / s) / x;
+			             if ((n == 1000) && (i < a.length - 1)) {
+			                 n = 1;
+			                 i++;
+			             }
+			             n += a[i];
+			             break;
+			        }
+			    }
+			    if (z < 0) {
+			    	return ("-" + n);
+			    } else if (q) {
+			    	return ("+" + n);
+			    } else {
+			    	return n;
+			    }
+			}
+		}
 		var levels = ["<i class = 'bi bi-star-fill'></i>", "1", "2", "3", "<i class = 'bi bi-lock-fill'></i>"];
 		for (var i = 0; i < 5; i++) {
 			var bottom = ((i + 1) * 15);
@@ -193,19 +225,23 @@
 				switch (num) {
 					case 0:
 						$("#levelButton_0").append("<div id = 'levelTip' style = 'bottom: calc(3vh + 6px); left: 6.5vw; border-right: 12px solid white'></div>");
-						$("#levelButton_0").append("<div id = 'levelDescription' style = 'bottom: calc(3vh - 12px); left: calc(6.5vw + 12px)'><h5>Tutorial</h5><hr><p class = 'mb-0'>In the tutorial, you'll select your company founder (who you'll play as) and your team. You'll also be introduced to the problem you're trying to solve.<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						// $("#levelButton_0").append("<div id = 'levelDescription' style = 'bottom: calc(3vh - 12px); left: calc(6.5vw + 12px)'><h5>Tutorial</h5><hr><p class = 'mb-0'>In the tutorial, you'll select your company founder (who you'll play as) and your team. You'll also be introduced to the problem you're trying to solve.<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						$("#levelButton_0").append("<div id = 'levelDescription' style = 'bottom: calc(3vh - 12px); left: calc(6.5vw + 12px)'><h5>Tutorial</h5><hr><p class = 'mb-0'>" + unicorn.dashboard[0] + "<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
 						break;
 					case 1:
 						$("#levelButton_1").append("<div id = 'levelTip' style = 'bottom: calc(3vh + 6px); right: 6.5vw; border-left: 12px solid white'></div>");
-						$("#levelButton_1").append("<div id = 'levelDescription' style = 'bottom: calc(3vh - 12px); right: calc(6.5vw + 12px)'><h5>Level 1</h5><hr><p class = 'mb-0'>In this level, you'll learn how to manage your budget and allocate funds between different types of resources.<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						// $("#levelButton_1").append("<div id = 'levelDescription' style = 'bottom: calc(3vh - 12px); right: calc(6.5vw + 12px)'><h5>Level 1</h5><hr><p class = 'mb-0'>In this level, you'll learn how to manage your budget and allocate funds between different types of resources.<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						$("#levelButton_1").append("<div id = 'levelDescription' style = 'bottom: calc(3vh - 12px); right: calc(6.5vw + 12px)'><h5>Level 1</h5><hr><p class = 'mb-0'>" + unicorn.dashboard[1] + "<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
 						break;
 					case 2:
 						$("#levelButton_2").append("<div id = 'levelTip' style = 'bottom: calc(3vh); left: 6.5vw; border-right: 12px solid white'></div>");
-						$("#levelButton_2").append("<div id = 'levelDescription' style = 'bottom: -10vh; left: calc(6.5vw + 12px)'><h5>Level 2</h5><hr><p class = 'mb-0'>In this level, you'll begin designing and building your solution based on the capital that you obtained in the previous level.<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						// $("#levelButton_2").append("<div id = 'levelDescription' style = 'bottom: -10vh; left: calc(6.5vw + 12px)'><h5>Level 2</h5><hr><p class = 'mb-0'>In this level, you'll begin designing and building your solution based on the capital that you obtained in the previous level.<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						$("#levelButton_2").append("<div id = 'levelDescription' style = 'bottom: -10vh; left: calc(6.5vw + 12px)'><h5>Level 2</h5><hr><p class = 'mb-0'>" + unicorn.dashboard[2] + "<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
 						break;
 					case 3:
 						$("#levelButton_3").append("<div id = 'levelTip' style = 'top: calc(3vh + 6px); right: 6.5vw; border-left: 12px solid white'></div>");
-						$("#levelButton_3").append("<div id = 'levelDescription' style = 'top: calc(3vh - 12px); right: calc(6.5vw + 12px)'><h5>Level 3</h5><hr><p class = 'mb-0'>In this level, you'll pitch your current solution to investors and try to gain funding from them to continue growing your company!<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						// $("#levelButton_3").append("<div id = 'levelDescription' style = 'top: calc(3vh - 12px); right: calc(6.5vw + 12px)'><h5>Level 3</h5><hr><p class = 'mb-0'>In this level, you'll pitch your current solution to investors and try to gain funding from them to continue growing your company!<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
+						$("#levelButton_3").append("<div id = 'levelDescription' style = 'top: calc(3vh - 12px); right: calc(6.5vw + 12px)'><h5>Level 3</h5><hr><p class = 'mb-0'>" + unicorn.dashboard[3] + "<br><button class = 'btn btn-warning mt-3'>Enter</button></div>");
 						break;
 					case 4:
 						$("#levelButton_4").append("<div id = 'levelTip' style = 'top: calc(3vh + 6px); left: 6.5vw; border-right: 12px solid white'></div>");
@@ -221,7 +257,12 @@
 				bubble = null;
 			}
 		}
-		$("#black").animate({ left: "-200vw" }, 600);
+		var unicorn;
+		$.getJSON("unicorn.json").always(function(data) {
+			unicorn = data;
+			$(".money").html("$" + toShort(unicorn.cash, 1));
+			$("#black").animate({ left: "-200vw" }, 600);
+		});
 	</script>
 </body>
 </html>

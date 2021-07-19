@@ -202,17 +202,15 @@
 		<div style = "width: 10vh"></div>
 	</div>
 	<div id = "info" class = "mx-auto p-4">
-		<p>Text goes here</p>
-		<p class = "text-center" style = "margin-top: 80vh"><button class = "btn btn-warning" onclick = "sceneCharacters()">Continue</button></p>
+		<p class = "text-center mt-4"><button class = "btn btn-warning" onclick = "sceneCharacters()">Continue</button></p>
 	</div>
 	<script src = "jquery-3.6.0.min.js"></script>
 	<script src = "bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"></script>
 	<script>
-		$("#black").animate({ left: "-200vw" }, 600);
 		var selectedCharacter = null;
 		var toggledCharacters;
 		var page = 0;
-		var team = ["CFO (Chief Financial Officer)", "COO (Chief Operating Officer)", "CTO (Chief Technology Officer)"];
+		var team = [];
 		function selectCharacter(char) {
 			$(".characterIcon.active").removeClass("active");
 			selectedCharacter = char;
@@ -231,13 +229,16 @@
 		}
 		function switchPage(dir) {
 			page += dir;
-			if (page == 3) { page = 0; }
-			if (page == -1) { page = 2; }
+			if (page == unicorn.tutorial.positions.length) { page = 0; }
+			if (page == -1) { page = unicorn.tutorial.positions.length - 1; }
 			$("#selector div:not(#prev, #next)").html(team[page]);
-			toggledCharacters = [];
+			toggledCharacters = new Array(unicorn.tutorial.positions.length);
 			$("#select .candidate").remove();
-			for (var i = 0; i < 3; i++) {
-				$("#select").append("<div id = 'candidate_" + i + "' class = 'character candidate'><div class = 'characterIcon' onclick = 'selectCandidate(" + i + ")'></div><div class = 'characterPlus' onclick = 'toggleResume(" + i + ")'>+</div><div class = 'characterDescription'><p class = 'm-3'>Text goes here</p></div><div class = 'characterName p-2 h3'>Candidate</div></div>");
+			for (var i = 0; i < unicorn.tutorial.positions[page].candidates.length; i++) {
+				$("#select").append("<div id = 'candidate_" + i + "' class = 'character candidate'><div class = 'characterIcon' onclick = 'selectCandidate(" + i + ")'></div><div class = 'characterPlus' onclick = 'toggleResume(" + i + ")'>+</div><div class = 'characterDescription'></div><div class = 'characterName p-2 h3'>" + unicorn.tutorial.positions[page].candidates[i].name + "</div></div>");
+				for (var j = 0; j < unicorn.tutorial.positions[page].metrics.length; j++) {
+						$("#candidate_" + i + " .characterDescription").append("<div class = 'm-2'>" + unicorn.tutorial.positions[page].metrics[j] + "<br><div class = 'progress mt-2 mb-3' style = 'height: 5px'><div class = 'progress-bar' style = 'width: " + (unicorn.tutorial.positions[page].candidates[i].stats[j] * 10) + "%'></div></div></div>");
+					}
 			}
 			if (selectedCharacter[page] != null) {
 				$("#candidate_" + selectedCharacter[page] + " .characterIcon").addClass("active");
@@ -279,14 +280,30 @@
 		function sceneTeam() {
 			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
 			setTimeout(function() {
-				selectedCharacter = [null, null, null];
-				toggledCharacters = [false, false, false];
-				$("#select").addClass("flex-wrap");
-				$("#select").html("<div id = 'selector' class = 'd-flex justify-content-center align-items-center text-center'><div id = 'prev' onclick = 'switchPage(-1)'><</div><div style = 'min-width: 30vw'>CFO (Chief Financial Officer)</div><div id = 'next' onclick = 'switchPage(1)'>></div></div>");
-				for (var i = 0; i < 3; i++) {
-					$("#select").append("<div id = 'candidate_" + i + "' class = 'character candidate'><div class = 'characterIcon' onclick = 'selectCandidate(" + i + ")'></div><div class = 'characterPlus' onclick = 'toggleResume(" + i + ")'>+</div><div class = 'characterDescription'><p class = 'm-3'>Text goes here</p></div><div class = 'characterName p-2 h3'>Candidate</div></div>");
+				$("#info").replaceWith("<div id = 'select' class = 'mx-auto p-1'></div>");
+				selectedCharacter = new Array(unicorn.tutorial.positions.length);
+				toggledCharacters = new Array(unicorn.tutorial.positions.length);
+				for (var i = 0; i < unicorn.tutorial.positions.length; i++) {
+					selectedCharacter[i] = null;
 				}
-				$("#info p").html("Please select a candidate to serve as your CFO, COO, and CTO.");
+				$("#select").addClass("flex-wrap");
+				$("#select").html("<div id = 'selector' class = 'd-flex justify-content-center align-items-center text-center'><div id = 'prev' onclick = 'switchPage(-1)'><</div><div style = 'min-width: 30vw'>" + unicorn.tutorial.positions[0].abbrev + " (" + unicorn.tutorial.positions[0].title + ")</div><div id = 'next' onclick = 'switchPage(1)'>></div></div>");
+				for (i = 0; i < unicorn.tutorial.positions[0].candidates.length; i++) {
+					$("#select").append("<div id = 'candidate_" + i + "' class = 'character candidate'><div class = 'characterIcon' onclick = 'selectCandidate(" + i + ")'></div><div class = 'characterPlus' onclick = 'toggleResume(" + i + ")'>+</div><div class = 'characterDescription'></div><div class = 'characterName p-2 h3'>" + unicorn.tutorial.positions[0].candidates[i].name + "</div></div>");
+					for (var j = 0; j < unicorn.tutorial.positions[0].metrics.length; j++) {
+						$("#candidate_" + i + " .characterDescription").append("<div class = 'm-2'>" + unicorn.tutorial.positions[0].metrics[j] + "<br><div class = 'progress mt-2 mb-3' style = 'height: 5px'><div class = 'progress-bar' style = 'width: " + (unicorn.tutorial.positions[0].candidates[i].stats[j] * 10) + "%'></div></div></div>");
+					}
+				}
+				$("body").append("<div id = 'info' class = 'mx-auto p-2 text-center d-flex flex-column justify-content-center'><p class = 'mb-0'>Create your team!</p></div>");
+				$("#black").animate({ left: "-200vw" }, 600);
+			}, 600);
+		}
+		function sceneText() {
+			$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+			setTimeout(function() {
+				$("#select").remove();
+				$("#info").remove();
+				$("body").append("<div id = 'info' class = 'mx-auto p-4'>" + unicorn.tutorial.mid + "<p class = 'text-center' style = 'margin-top: 18vh'><button class = 'btn btn-warning' onclick = 'sceneTeam()'>Continue</button></p></div>");
 				$("#black").animate({ left: "-200vw" }, 600);
 			}, 600);
 		}
@@ -295,7 +312,7 @@
 			setTimeout(function() {
 				$("#introduction").html("<p><input type = 'text' id = 'companyName'></p>");
 				$("#banner").css("visibility", "");
-				$("#info p").html("<button class = 'btn btn-warning' onclick = 'sceneTeam()'>Continue</button>");
+				$("#info p").html("<button class = 'btn btn-warning' onclick = 'sceneText()'>Continue</button>");
 				$("#black").animate({ left: "-200vw" }, 600);
 			}, 600);
 		}
@@ -315,12 +332,21 @@
 				$("#info").replaceWith("<div id = 'select' class = 'mx-auto p-1'></div>");
 				for (var i = 0; i < 4; i++) {
 					toggledCharacters.push(false);
-					$("#select").append("<div id = 'character_" + i + "' class = 'character'><div class = 'characterIcon' onclick = 'selectCharacter(" + i + ")'></div><div class = 'characterPlus' onclick = 'toggleDescription(" + i + ")'>+</div><div class = 'characterDescription'><p class = 'm-3'>Text goes here</p></div><div class = 'characterName p-2 h3'>Character</div></div>");
+					$("#select").append("<div id = 'character_" + i + "' class = 'character'><div class = 'characterIcon' onclick = 'selectCharacter(" + i + ")'></div><div class = 'characterPlus' onclick = 'toggleDescription(" + i + ")'>+</div><div class = 'characterDescription'><p class = 'm-3'>" + unicorn.characters[i].description + "</p></div><div class = 'characterName p-2 h3'>" + unicorn.characters[i].name + "</div></div>");
 				}
 				$("body").append("<div id = 'info' class = 'mx-auto p-2 text-center d-flex flex-column justify-content-center'><p class = 'mb-0'>Please select a character.</p></div>");
 				$("#black").animate({ left: "-200vw" }, 600);
 			}, 600);
 		}
+		var unicorn;
+		$.getJSON("unicorn.json").always(function(data) {
+			unicorn = data;
+			$("#info").prepend(unicorn.tutorial.start);
+			for (var i = 0; i < unicorn.tutorial.positions.length; i++) {
+				team.push(unicorn.tutorial.positions[i].abbrev + " (" + unicorn.tutorial.positions[i].title + ")");
+			}
+			$("#black").animate({ left: "-200vw" }, 600);
+		});
 	</script>
 </body>
 </html>
