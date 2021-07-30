@@ -132,7 +132,7 @@
 				<a class = "nav-link" data-bs-toggle = "tab" data-bs-target = "#infoLeaderboard" href = "#">Leaderboard</a>
 			</li>
 			<li class = "nav-item">
-				<a class = "nav-link" href = "login.html">Log out</a>
+				<a class = "nav-link" href = "#" id = "logOut">Log out</a>
 			</li>
 		</ul>
 		<div class = "tab-content" id = "infoPanel">
@@ -172,7 +172,19 @@
 	</div>
 	<script src = "jquery-3.6.0.min.js"></script>
 	<script src = "bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"></script>
+	<script src = "https://www.gstatic.com/firebasejs/8.7.1/firebase.js"></script>
 	<script>
+		var firebaseConfig = {
+		    apiKey: "AIzaSyCXHZy-JwPN7xg40bs42AXDRZ1yE0TE3bw",
+		    authDomain: "stemunicorn.firebaseapp.com",
+		    projectId: "stemunicorn",
+		    storageBucket: "stemunicorn.appspot.com",
+		    messagingSenderId: "797956205598",
+		    appId: "1:797956205598:web:00753c21e03763eea5520f"
+		};
+ 		firebase.initializeApp(firebaseConfig);
+ 		var db = firebase.firestore();
+ 		var transition = false;
 		function toPlaces(n, x, q = false) {
 			return (((q && n > 0) ? "+" : 0) + Math.round((n + Number.EPSILON) * (10 ** x)) / (10 ** x));
 		}
@@ -262,6 +274,25 @@
 			unicorn = data;
 			$(".money").html("$" + toShort(unicorn.cash, 1));
 			$("#black").animate({ left: "-200vw" }, 600);
+		});
+		$(() => {
+			firebase.auth().onAuthStateChanged((user) => {
+				if (!user) {
+					if (!transition) {
+						window.open("login.html", "_self");
+					}
+				} else {
+					$("#black").animate({ "left": "-200vw" }, 600);
+				}
+			});
+		});
+		$("#logOut").click(function() {
+			$("#black").hide().css("left", "-50vw").fadeIn(600, () => {
+				transition = true;
+				firebase.auth().signOut().then(() => {
+					window.open("login.html", "_self");
+				});
+			});
 		});
 	</script>
 </body>

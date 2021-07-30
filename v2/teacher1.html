@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>STEM Unicorn - Teacher Dashboard</title>
+	<link rel = "stylesheet" href = "../bootstrap-5.0.1-dist/css/bootstrap.min.css" type = "text/css" />
+	<link rel = "preconnect" href = "https://fonts.gstatic.com" />
+	<link rel = "stylesheet" href = "https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap" />
+	<link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+	<style>
+		* {
+			font-family: Lato, sans-serif;
+		}
+		html {
+			height: 100vh;
+		}
+		body {
+			background-image: radial-gradient(circle, #5441cc 30%, #0b0052);
+			color: white;
+			position: relative;
+			overflow-x: hidden;
+		}
+		nav {
+			background-color: #ffa600;
+		}
+		.btn-danger:hover {
+			background-color: #bb2d3b !important;
+		}
+		#black {
+			position: fixed;
+			left: -50vw;
+			top: 0;
+			width: 200vw;
+			height: 100vh;
+			background-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent 100%);
+			z-index: 100;
+			cursor: wait;
+		}
+	</style>
+</head>
+<body>
+	<div id = "black"></div>
+	<nav class = "navbar navbar-expand-lg navbar-dark">
+		<div class = "container-fluid">
+			<span class = "navbar-brand mb-0 h1">STEM Unicorn</span>
+			<span class = "navbar-text ms-auto">Welcome, James</span>
+			<span class = "navbar-text ms-3"><button class = "btn btn-sm btn-outline-light">Log out</button></span>
+		</div>
+	</nav>
+	<div class = "card mt-5 mx-auto w-50 text-dark text-center p-2" id = "card0">
+		<div class = "card-body">
+			<h3>Week 1</h3>
+			<br>
+			<p>Students waiting:</p>
+			<table class = "table w-50 mx-auto" id = "waitingList">
+				<thead>
+					<tr>
+						<th scope = "col">Name</th>
+						<th scope = "col">Status</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<p class = "mt-4 mb-0 d-none" id = "beginWeek"><button class = "btn btn-primary">Begin</button></p>
+		</div>
+	</div>
+	<div class = "card mt-4 mx-auto w-50 text-dark text-center p-2" id = "card1">
+		<div class = "card-body">
+			<h5 class = 'mb-0'>Video: Welcome to STEM Unicorn</h5>
+		</div>
+	</div>
+	<div class = "card mt-4 mx-auto w-50 text-dark text-center p-2" id = "card2">
+		<div class = "card-body">
+			<h5 class = 'mb-0'>Team selection</h5>
+		</div>
+	</div>
+	<div class = "card mt-4 mx-auto w-50 text-dark text-center p-2" id = "card3">
+		<div class = "card-body">
+			<h5 class = 'mb-0'>Video: The Power of STEM</h5>
+		</div>
+	</div>
+	<div class = "card mt-4 mx-auto w-50 text-dark text-center p-2" id = "card4">
+		<div class = "card-body">
+			<h5 class = 'mb-0'>Product Selection</h5>
+		</div>
+	</div>
+	<div class = "card mt-4 mx-auto w-50 text-dark text-center p-2" id = "card5">
+		<div class = "card-body">
+			<h5 class = 'mb-0'>Video: The Startup World</h5>
+		</div>
+	</div>
+	<div class = "card mt-4 mx-auto w-50 text-dark text-center p-2" id = "card66">
+		<div class = "card-body">
+			<h5 class = 'mb-0'>Week 1 Quiz</h5>
+		</div>
+	</div>
+	<div class = "card mt-4 mx-auto w-50 text-dark text-center p-2" id = "card7">
+		<div class = "card-body">
+			<h5 class = 'mb-0'>Weekly Decisions</h5>
+		</div>
+	</div>
+	<div class = "card mt-4 mx-auto w-50 text-dark text-center p-2" id = "card8">
+		<div class = "card-body">
+			<h5 class = 'mb-0'>Level Complete</h5>
+		</div>
+	</div>
+	<br>
+	<br>
+	<script src = "../jquery-3.6.0.min.js"></script>
+	<script src = "../bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"></script>
+	<script src = "https://www.gstatic.com/firebasejs/8.7.1/firebase.js"></script>
+	<script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.min.js"></script>
+	<script>
+		var firebaseConfig = {
+		    apiKey: "AIzaSyCXHZy-JwPN7xg40bs42AXDRZ1yE0TE3bw",
+		    authDomain: "stemunicorn.firebaseapp.com",
+		    projectId: "stemunicorn",
+		    storageBucket: "stemunicorn.appspot.com",
+		    messagingSenderId: "797956205598",
+		    appId: "1:797956205598:web:00753c21e03763eea5520f"
+		};
+ 		firebase.initializeApp(firebaseConfig);
+ 		var db = firebase.firestore();
+ 		var code;
+ 		var size = 0;
+ 		var colors = ["255, 0, 0", "255, 213, 0", "0, 255, 0", "0, 0, 255"];
+ 		var selection = 0;
+ 		function beginSelection() {
+ 			$(".card .btn-primary").attr("disabled", "true").html("<span class = 'spinner-border spinner-border-sm'></span>");
+ 			selection = 1;
+ 			db.collection("classes").doc(code).update({ selection: 1 }).then(function() {
+ 				$(".card-body *:not(h3, table)").remove();
+ 				$(".table").empty().append("<thead><th scope = 'col'>Student</th><th scope = 'col'>Character</th><th scope = 'col'>Partner</th></thead><tbody></tbody>");
+ 				db.collection("classes").doc(code).collection("students").orderBy("created", "asc").onSnapshot(function(qS) {
+ 					console.log("dasfa");
+					$(".table tbody").empty();
+					var empty = true;
+					var chosen = qS.size;
+					qS.forEach(function(s) {
+						var student = s.data();
+						if (student.character != -1 && student.selection != 2) {
+							empty = false;
+							$("tbody").append("<tr><td>" + student.name + "</td><td style = 'color: rgb(" + colors[student.character] + ")'>" + unicorn.characters[student.character].name + "</td><td class = 'single'></td></tr>");
+						} else if (student.selection == 2) {
+							chosen--;
+							empty = false;
+							$("tbody").append("<tr><td>" + student.name + "</td><td style = 'color: rgb(" + colors[student.character] + ")'>" + unicorn.characters[student.character].name + "</td><td>" + (student.partner == false ? "N/A" : student.partner) + "</td></tr>");
+						}
+					});
+					console.log(chosen);
+					if (empty) {
+						all = false;
+						$("tbody").append("<tr><td colspan = '3'>Students are selecting characters...</td></tr>");
+					} /* else if (chosen == 0) {
+						$(".card-body").append("<br><p><button class = 'btn btn-primary'>Proceed</button></p>");
+						$(".card-body .btn-primary").click(function() {
+							$(".card-body .btn-primary").attr("disabled", "true").html("<span class = 'spinner-border spinner-border-sm'></span>");
+							selection = 2;
+							db.collection("classes").doc(code).update({ selection: 2 }).then(function() {
+								location.reload();
+							});
+						});
+					} */ else if (chosen == 1) {
+						$(".single").html("<button class = 'btn btn-sm btn-primary'>Create single team</button>");
+						$(".single .btn-primary").click(function() {
+							$(".single .btn-primary").attr("disabled", "true").html("<span class = 'spinner-border spinner-border-sm'></span>");
+							db.collection("classes").doc(code).collection("students").doc($(this).parent().parent().children("td:first-child").html()).update({ status: 2, partner: false }).then(function() {
+								db.collection("classes").doc(code).collection("teams").add({ members: [$(this).parent().parent().children("td:first-child").html()] });
+							});
+						});
+					}
+				});
+ 			});
+ 		}
+		// $("#card2 .card-body").append("<h5><br><table class = 'table w-75 mx-auto align-middle'></table>");
+		/* db.collection("accounts").where("class", "==", code).onSnapshot((qS) => {
+			if (selection == 0) {
+				$("table").empty();
+				size = qS.size;
+				$("p.d-flex span:last-child").html(size == 0 ? "Waiting for students to join..." : size + (size == 1 ? " student " : " students ") + "joined...");
+				qS.forEach(function(doc) {
+					var student = doc.data();
+					$("table").append("<tr><td class = 'w-50 py-1'>" + student.name + "</td><td class = 'w-50 py-1'><button class = 'btn btn-sm btn-danger' style = 'background-color: #dc3545'>Remove</button></td></tr>");
+					$("tr:last-child .btn-danger").click(function() {
+						$(this).attr("disabled", "true").html("<span class = 'spinner-border spinner-border-sm'></span>");
+						db.collection("classes").doc(code).collection("students").doc(doc.id).delete();
+					});
+				});
+				$("#beginSelection").remove();
+				if (size > 0) {
+					$(".card-body").append("<p class = 'mt-5' id = 'beginSelection'><button class = 'btn btn-primary' onclick = 'beginSelection()'>Continue to Character/Team Selection</button></p>");
+				}
+			}
+		}); */
+ 		$(() => {
+			firebase.auth().onAuthStateChanged((user) => {
+				if (!user) {
+					if (true) {
+						window.open("login.html", "_self");
+					}
+				} else {
+					db.collection("accounts").doc(user.uid).get().then((a) => {
+						if (a.data().teacher) {
+							var selected = a.data().class;
+							code = selected;
+							name = a.data().name + " " + a.data().last;
+							var status = a.data().status;
+							if (selected == "") {
+								window.open("../teacher.html", "_self");
+							} else {
+								var online;
+								$.ajax({ url: "http://stemunicorn.herokuapp.com/online?class=" + selected }).done((d) => {
+									online = d;
+									db.collection("accounts").where("class", "==", selected).get().then((qS) => {
+										qS.forEach((d) => {
+											if (!d.data().teacher) {
+												$("#waitingList tbody").append("<tr><td>" + d.data().name + " " + d.data().last.substring(0, 1) + ".</td></tr>");
+												if (typeof online[d.id] != "undefined") {
+													$("#waitingList tbody tr:last-child").append("<td class = 'text-success'>Online</td>");
+												} else {
+													$("#waitingList tbody tr:last-child").append("<td class = 'text-danger'>Offline</td>");
+												}
+											}
+										});
+									});
+								});
+								socket = io("http://stemunicorn.herokuapp.com");
+								socket.once("connect", () => {
+									socket.on("update", (online) => {
+										var online;
+										$.ajax({ url: "http://stemunicorn.herokuapp.com/online?class=" + selected }).done((d) => {
+											online = d;
+											db.collection("accounts").where("class", "==", selected).get().then((qS) => {
+												$("#waitingList tbody").empty();
+												qS.forEach((d) => {
+													if (!d.data().teacher) {
+														$("#waitingList tbody").append("<tr><td>" + d.data().name + " " + d.data().last.substring(0, 1) + ".</td></tr>");
+														if (typeof online[d.id] != "undefined") {
+															$("#waitingList tbody tr:last-child").append("<td class = 'text-success'>Online</td>");
+														} else {
+															$("#waitingList tbody tr:last-child").append("<td class = 'text-danger'>Offline</td>");
+														}
+													}
+												});
+												$("#black").animate({ "left": "-200vw" }, 600);
+												$("#beginWeek").removeClass("d-none");
+											});
+										});
+									});
+									db.collection("accounts").where("class", "==", a.data().class).onSnapshot((qS) => {
+										socket.emit("online", { teacher: true, class: selected });
+									});
+								});
+								socket.emit("online", { teacher: true, class: selected });
+							}
+							db.collection("accounts").where("class", "==", code).onSnapshot((qS) => {
+								$(".card:not(#card0) .card-body *").not("h3, h5").remove();
+								var cards = [null, false, false];
+								var chosen = 3;
+								var single = "";
+								qS.forEach((s) => {
+									if (s.data().status != 0 && !s.data().teacher) {
+										$("#card0 .card-body *").not("h3").remove();
+									}
+									if (s.data().status == 1) {
+										if (!cards[1]) {
+											$("#card1 .card-body").append("<br><table class = 'table w-25 mx-auto align-middle'><thead><th scope = 'col'>Name</th></thead><tbody></tbody></table>");
+											cards[1] = true;
+										}
+										$("#card1 .card-body tbody").append("<tr><td>" + s.data().name + " " + s.data().last.substring(0, 1) + ".</td></tr>");
+									}
+									if (s.data().status == 2) {
+										if (!cards[2]) {
+											$("#card2 .card-body").append("<br><table class = 'table w-75 mx-auto align-middle'><thead><th scope = 'col'>Name</th><th scope = 'col'>Character</th><th scope = 'col'>Partner</th></thead><tbody></tbody></table>");
+											cards[2] = true;
+										}
+										if (s.data().character != -1 && s.data().selection != 2) {
+											if (chosen == 1) {
+												single = s.id;
+											}
+											$("#card2 tbody").append("<tr><td>" + s.data().name + " " + s.data().last.substring(0, 1) + ".</td><td style = 'color: rgb(" + colors[s.data().character] + ")'>" + unicorn.characters[s.data().character].name + "</td><td class = 'single'></td></tr>");
+										} else if (s.data().selection == 2) {
+											chosen--;
+											$("#card2 tbody").append("<tr><td>" + s.data().name + " " + s.data().last.substring(0, 1) + ".</td><td style = 'color: rgb(" + colors[s.data().character] + ")'>" + unicorn.characters[s.data().character].name + "</td><td>" + (s.data().partner == false ? "N/A (single team)" : s.data().partner) + "</td></tr>");
+										} else {
+											$("#card2 tbody").append("<tr><td>" + s.data().name + " " + s.data().last.substring(0, 1) + ".</td><td></td><td></td></tr>");
+										}
+									}
+									if (s.data().status == 3) {
+										if (!cards[3]) {
+											$("#card3 .card-body").append("<br><table class = 'table w-25 mx-auto align-middle'><thead><th scope = 'col'>Name</th></thead><tbody></tbody></table>");
+											cards[3] = true;
+										}
+										$("#card3 .card-body tbody").append("<tr><td>" + s.data().name + " " + s.data().last.substring(0, 1) + ".</td></tr>");
+									}
+								});
+								if (chosen == 0 && cards[2]) {
+									$("#card2 .card-body").append("<p class = 'mb-0'><button class = 'btn btn-primary'>Continue</button></p>");
+									$("#card2 button").click(() => {
+										$("#card2 .card-body *").not("h3, h5").remove();
+										db.collection("classes").doc(code).update({ status: 3 });
+									});
+								} else if (chosen == 1) {
+									$(".single").html("<button class = 'btn btn-sm btn-primary'>Create single team</button>");
+									$(".single .btn-primary").click(function() {
+										$(".single .btn-primary").attr("disabled", "true").html("<span class = 'spinner-border spinner-border-sm'></span>");
+										db.collection("accounts").doc(single).update({ selection: 2, partner: false }).then(function() {
+											db.collection("classes").doc(code).collection("teams").add({ members: [single] });
+										});
+									});
+								}
+							});
+						} else {
+							window.open("login.html", "_self");
+						}
+					});
+				}
+			});
+		});
+		$.getJSON("../unicorn.json").always(function(data) {
+			unicorn = data;
+		});
+		$("#beginWeek button").click(() => {
+			$("#card0 .card-body *").not("h3").remove();
+			db.collection("classes").doc(code).update({ status: 1 });
+		});
+	</script>
+</body>
+</html>

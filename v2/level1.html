@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>STEM Unicorn</title>
+	<link rel = "stylesheet" href = "../bootstrap-5.0.1-dist/css/bootstrap.min.css" type = "text/css" />
+	<link rel = "preconnect" href = "https://fonts.gstatic.com" />
+	<link rel = "stylesheet" href = "https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap" />
+	<link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+	<style>
+		* {
+			font-family: Lato, sans-serif;
+		}
+		html {
+			height: 100vh;
+		}
+		body {
+			background-image: radial-gradient(circle, #5441cc 30%, #0b0052);
+			color: white;
+			position: relative;
+			overflow-x: hidden;
+			height: 100%;
+		}
+		nav {
+			background-color: #ffa600;
+		}
+		.btn-danger:hover {
+			background-color: #bb2d3b !important;
+		}
+		#teamSelect {
+			height: 100%;
+			width: 50%;
+			border-right: 2px solid white;
+			padding-right: 3rem;
+			float: left;
+		}
+		#characterSelect {
+			height: 100%;
+			width: 50%;
+			border-left: 2px solid white;
+			padding-left: 3rem;
+			float: right;
+			text-align: center;
+		}
+		.character {
+			width: calc(50% - 2rem - 1px);
+			border-width: 2px;
+			border-style: solid;
+			border-radius: 8px;
+			margin: 1rem;
+			cursor: pointer;
+			transition: transform 0.3s;
+			padding: 1rem;
+			color: white;
+			position: relative;
+		}
+		.character:hover {
+			transform: scale(1.05);
+		}
+		#teamGallery {
+			width: calc((8vw * 4) + (1.25rem * 8.5));
+		}
+		@media (max-width: 1000px) {
+			#teamGallery {
+				width: calc((8vw * 3) + (1.25rem * 6.5));
+			}
+		}
+		.classmate {
+			display: inline-block;
+			margin: 1.25rem;
+			transition: transform 0.3s;
+		}
+		.classmate.selectable {
+			cursor: pointer;
+		}
+		.classmateIcon {
+			width: 8vw;
+			height: 8vw;
+			border-radius: 50%;
+			background-color: rgba(255, 0, 0, 0.4);
+			
+		}
+		.character.active::before {
+			content: "Selected";
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			color: black;
+			font-weight: bold;
+			background-color: white;
+			padding: 0.5rem 0.75rem;
+			border-top-left-radius: 8px;
+			border-bottom-right-radius: 6px;
+		}
+		.classmate.selectable:hover {
+			transform: scale(1.05);
+		}
+		#black {
+			position: fixed;
+			left: -50vw;
+			top: 0;
+			width: 200vw;
+			height: 100vh;
+			background-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent 100%);
+			z-index: 100;
+			cursor: wait;
+		}
+		.student {
+			display: inline-block;
+			margin: 2rem 0;
+			text-align: center;
+			width: calc(20% - 3px);
+			font-size: 1.2rem;
+			color: rgb(150, 150, 150);
+		}
+		.student.active {
+			color: white;
+		}
+		.product {
+			flex-grow: 1;
+			border-width: 2px;
+			border-style: solid;
+			border-radius: 8px;
+			margin: 1rem;
+			cursor: pointer;
+			transition: transform 0.3s;
+			padding: 1rem;
+			color: white;
+			position: relative;
+			text-align: center;
+		}
+		.product * {
+			width: 100%;
+		}
+		.product:hover {
+			transform: scale(1.05);
+		}
+		.product.me::before {
+			content: "I Selected";
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			color: black;
+			font-weight: bold;
+			background-color: white;
+			padding: 0.5rem 0.75rem;
+			border-top-left-radius: 8px;
+			border-bottom-right-radius: 6px;
+			font-size: 0.8rem;
+		}
+		.product.me::before {
+			content: "Partner Selected";
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			color: black;
+			font-weight: bold;
+			background-color: white;
+			padding: 0.5rem 0.75rem;
+			border-top-left-radius: 8px;
+			border-bottom-right-radius: 6px;
+			font-size: 0.8rem;
+		}
+	</style>
+</head>
+<body class = "d-flex flex-column">
+	<div id = "black"></div>
+	<nav class = "navbar navbar-expand-lg navbar-dark">
+		<div class = "container-fluid">
+			<span class = "navbar-brand mb-0 h1">STEM Unicorn</span>
+			<span class = "navbar-text ms-auto"></span>
+			<span class = "navbar-text ms-3"><button class = "btn btn-sm btn-outline-light" id = "logOut">Log out</button></span>
+		</div>
+	</nav>
+	<div class = "container-fluid flex-grow-1 p-5">
+		<h4 class = "d-flex justify-content-center align-items-center"><span class = 'spinner-border me-3'></span>Waiting for your teacher...</h4>
+		<div class = "container-fluid mt-2" id = "listOnline">
+		</div>
+		<!--<div id = "teamSelect">
+			<div id = "teamGallery" class = "mx-auto">
+			</div>
+		</div>
+		<div id = "characterSelect" class = "d-flex flex-column">
+			<h6 class = "my-4">Select your character, then pick one of your classmates to form a team with!</h6>
+			<div id = "characterGallery" class = "d-flex flex-wrap flex-grow-1">
+			</div>
+		</div>-->
+	</div>
+	<div class = "modal fade" id = "joinClass" data-bs-backdrop = "static" data-bs-keyboard = "false" tabindex = "-1">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-body text-dark text-center p-5">
+					<h4>Welcome to STEM Unicorn!</h4>
+					<p class = "my-4">Please obtain a class code from your teacher and enter it below.</p>
+					<p><input type = "text" class = "form-control w-auto px-4 mx-auto text-center" placeholder = "Code..." maxlength = "6"></p>
+					<p class = "mt-4 mb-0"><button class = "btn btn-primary" onclick = "joinClass()">Join Class</button></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class = "modal fade" id = "sendRequest" data-bs-backdrop = "static" data-bs-keyboard = "false" tabindex = "-1">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-body text-dark text-center p-5">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class = "modal fade" id = "teamRequest" data-bs-backdrop = "static" data-bs-keyboard = "false" tabindex = "-1">
+		<div class = "modal-dialog">
+			<div class = "modal-content">
+				<div class = "modal-body text-dark text-center p-5">
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src = "../jquery-3.6.0.min.js"></script>
+	<script src = "../bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"></script>
+	<script src = "https://www.gstatic.com/firebasejs/8.7.1/firebase.js"></script>
+	<script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.min.js"></script>
+	<script>
+		var firebaseConfig = {
+		    apiKey: "AIzaSyCXHZy-JwPN7xg40bs42AXDRZ1yE0TE3bw",
+		    authDomain: "stemunicorn.firebaseapp.com",
+		    projectId: "stemunicorn",
+		    storageBucket: "stemunicorn.appspot.com",
+		    messagingSenderId: "797956205598",
+		    appId: "1:797956205598:web:00753c21e03763eea5520f"
+		};
+ 		firebase.initializeApp(firebaseConfig);
+ 		var db = firebase.firestore();
+ 		var name;
+ 		var code;
+ 		var colors = ["255, 0, 0", "255, 255, 0", "0, 255, 0", "0, 0, 255"];
+ 		var selected = -1;
+ 		var receivedRequest = false;
+ 		var pendingRequests = [];
+ 		var pickedTeam = false;
+ 		var transition = false;
+ 		var socket;
+ 		var status = null;
+ 		function checkRequests(r = true) {
+ 			if (r) {
+ 				receivedRequest = false;
+ 			}
+ 			setTimeout(function() {
+	 			db.collection("accounts").doc(firebase.auth().currentUser.uid).collection("requests").orderBy("created", "asc").onSnapshot(function(qS) {
+					qS.forEach(function(r) {
+						pendingRequests = [];
+						pendingRequests[pendingRequests.length] = r.data();
+						pendingRequests[pendingRequests.length - 1].id = r.id;
+					});
+					if (!receivedRequest && qS.size > 0 && !pickedTeam) {
+						if ($("#teamRequest").hasClass("show")) {
+							document.getElementById("teamRequest").addEventListener("hidden.bs.modal", teamRequest, { once: true });
+						} else if ($("#sendRequest").hasClass("show")) {
+							document.getElementById("sendRequest").addEventListener("hidden.bs.modal", teamRequest, { once: true });
+						} else {
+							teamRequest(true);
+						}
+					}
+				});
+	 		}, 10);
+ 		}
+ 		function sendRequest(id, n) {
+ 			return function() {
+ 				$("#sendRequest .modal-body").html("<h4>Waiting for " + n + " to respond to your team request...</h4>");
+ 				db.collection("accounts").doc(firebase.auth().currentUser.uid).update({ selection: 1 }).then(function() {
+ 					db.collection("accounts").doc(id).collection("requests").add({ from: name, from_id: firebase.auth().currentUser.uid, to: n, to_id: id, status: null, created: firebase.firestore.Timestamp.fromDate(new Date()) }).then(function(_r) {
+ 						db.collection("accounts").doc(id).collection("requests").doc(_r.id).onSnapshot(function(r) {
+ 							if (r.exists) {
+	 							if (r.data().status == true) {
+	 								db.collection("accounts").doc(id).collection("requests").doc(_r.id).delete().then(function() {
+		 								db.collection("classes").doc(code).collection("teams").add({ members: [name, n] }).then(function() {
+		 									db.collection("accounts").doc(firebase.auth().currentUser.uid).update({ selection: 2, partner: n }).then(function() {
+		 										pickedTeam = true;
+		 										$("#sendRequest .modal-body").html("<h4>Awesome! You and " + n + " are now on a team.</h4><br><p class = 'd-flex justify-content-center align-items-center'><span class = 'spinner-border spinner-border-sm me-2'></span>Please wait...</p>");
+		 									});
+		 								});
+		 							});
+	 							} else if (r.data().status == false) {
+	 								db.collection("accounts").doc(id).collection("requests").doc(_r.id).delete().then(function() {
+	 									db.collection("accounts").doc(firebase.auth().currentUser.uid).update({ selection: 0 }).then(function() {
+	 										sendModal.hide();
+	 										document.getElementById("sendRequest").addEventListener("hidden.bs.modal", checkRequests, { once: true });
+	 									});
+	 								});
+	 							}
+	 						}
+ 						});
+ 						var el = db.collection("accounts").doc(id).onSnapshot(function(s) {
+ 							if (s.data().selection == 2 && s.data().partner != name) {
+ 								db.collection("accounts").doc(id).collection("requests").doc(_r.id).delete().then(function() {
+		 							db.collection("accounts").doc(firebase.auth().currentUser.uid).update({ selection: 0 }).then(function() {
+										sendModal.hide();
+										document.getElementById("sendRequest").addEventListener("hidden.bs.modal", checkRequests, { once: true });
+										el();
+									});
+		 						});
+	 						}
+ 						});
+ 						$("#sendRequest .modal-body").append("<br><p><button class = 'btn btn-secondary'>Cancel</button></p>");
+ 						$("#sendRequest .btn-secondary").click(function() {
+ 							db.collection("accounts").doc(id).collection("requests").doc(_r.id).delete().then(function() {
+ 								db.collection("accounts").doc(firebase.auth().currentUser.uid).update({ selection: 0 }).then(function() {
+ 									sendModal.hide();
+ 									document.getElementById("sendRequest").addEventListener("hidden.bs.modal", checkRequests, { once: true });
+ 								});
+ 							});
+ 						});
+ 					});
+ 				});
+ 				sendModal.show();
+ 			}
+ 		}
+ 		function teamRequest(t = false) {
+ 			if (!t) {
+ 				setTimeout(function() {
+ 					teamRequest(true);
+ 				}, 10);
+ 			} else {
+	 			receivedRequest = true;
+	 			var request = pendingRequests[0];
+	 			var declinedRequest = false;
+	 			$("#teamRequest .modal-body").html("<h4>" + request.from + " sent you a team request!</h4><br><p><button class = 'btn btn-primary me-2'>Accept</button><button class = 'btn btn-danger'>Decline</button></p>");
+	 			$("#teamRequest .btn-primary").click(function() {
+	 				$("#teamRequest .btn-primary").attr("disabled", "true").html("<span class = 'spinner-border spinner-border-sm'></span>");
+	 				$("#teamRequest .btn-danger").remove();
+	 				db.collection("accounts").doc(firebase.auth().currentUser.uid).collection("requests").doc(request.id).update({ status: true }).then(function() {
+	 					db.collection("accounts").doc(firebase.auth().currentUser.uid).update({ selection: 2, partner: request.from }).then(function() {
+	 						pickedTeam = true;
+	 						$("#teamRequest .modal-body").html("<h4>Awesome! You and " + request.from + " are now on a team.</h4><br><p class = 'd-flex justify-content-center align-items-center'><span class = 'spinner-border spinner-border-sm me-2'></span>Please wait...</p>");
+	 					});
+	 				});
+	 			});
+	 			$("#teamRequest .btn-danger").click(function() {
+	 				$("#teamRequest .btn-danger").attr("disabled", "true").html("<span class = 'spinner-border spinner-border-sm'></span>");
+	 				$("#teamRequest .btn-primary").remove();
+	 				db.collection("classes").doc(code).collection("students").doc(name).collection("requests").doc(request.id).update({ status: false }).then(function() {
+	 					receivedRequest = false;
+	 					declinedRequest = true;
+	 					requestModal.hide();
+	 					document.getElementById("teamRequest").addEventListener("hidden.bs.modal", checkRequests, { once: true });
+	 				});
+	 			});
+	 			db.collection("accounts").doc(firebase.auth().currentUser.uid).collection("requests").doc(request.id).onSnapshot(function(r) {
+	 				if (!r.exists && !pickedTeam && !declinedRequest) {
+	 					receivedRequest = false;
+	 					requestModal.hide();
+	 					document.getElementById("teamRequest").addEventListener("hidden.bs.modal", checkRequests, { once: true });
+	 				}
+	 			});
+	 			requestModal.show();
+	 		}
+ 		}
+ 		function beginSelection() {
+ 			db.collection("accounts").doc(firebase.auth().currentUser.uid).update({ status: 2 });
+			$("body > .container-fluid").html("<div id = 'teamSelect'> <div id = 'teamGallery' class = 'mx-auto'> </div> </div> <div id = 'characterSelect' class = 'd-flex flex-column'> <h6 class = 'my-4'>Select your character, then pick one of your classmates to form a team with!</h6> <div id = 'characterGallery' class = 'd-flex flex-wrap flex-grow-1'> </div> </div>");
+ 			for (var i = 0; i < colors.length; i++) {
+	 			$("#characterGallery").append("<div class = 'character d-flex align-items-stretch' style = 'border-color: rgb(" + colors[i] + "); background-color: rgba(" + colors[i] + ", 0.4)'><div style = 'outline: 1px solid red; width: 100px'></div><div class = 'd-flex flex-column ms-4 flex-grow-1'><h3>" + unicorn.characters[i].name + "</h3><div>Description</div></div></div>");
+	 		}
+	 		$(".character").each(function(j) {
+				$(this).click(function() {
+	 				$(".character.active").removeClass("active");
+	 				$(this).addClass("active");
+	 				selected = j;
+	 				db.collection("accounts").doc(firebase.auth().currentUser.uid).update({ character: j });
+				});
+			});
+			db.collection("accounts").where("class", "==", code).where("status", "==", 2).onSnapshot(function(qS) {
+				$("#teamGallery").empty();
+				qS.forEach((s) => {
+					var character = s.data();
+					if (character.character != -1 && character.selection == 0) {
+						$("#teamGallery").append("<div class = 'classmate'><div class = 'classmateIcon' style = 'border-color: rgb(" + colors[character.character] + "); background-color: rgba(" + colors[character.character] + ", 0.7)'></div><h6 class = 'mt-3 mb-0 text-center'>" + character.name + "</h6></div>");
+						if (character.character != selected && character.name != name && selected != -1) {
+							$("#teamGallery .classmate:last-child").addClass("selectable").click(sendRequest(s.id, character.name));
+						}
+						if (character.name == name) {
+							selected = character.character;
+						}
+					}
+					if (character.name == name && character.partner != undefined && character.partner == false) {
+						pickedTeam = true;
+						$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+						$("#teamRequest .modal-body").html("<h4><p class = 'mb-0'><span class = 'spinner-border spinner-border-sm me-2'></span>Please wait...</p>");
+						requestModal.show();
+					}
+				});
+			});
+			checkRequests(false);
+ 		}
+ 		function productSelection() {
+ 			db.collection("accounts").doc(firebase.auth().currentUser.uid).update({ status: 4 });
+			$("body > .container-fluid").html("<h4 class = 'text-center'>Product Selection</h4><div id = 'productSelect' class = 'w-75 d-flex mx-auto'><div class = 'product' style = 'border-color: rgb(215, 3, 252); background-color: rgba(215, 3, 252, 0.4)'><h3>Delivery Robot</h3><div class = 'my-3 mx-auto' style = 'outline: 1px solid red; width: 150px; height: 30vh'></div><div>Description<br><br><br><br><br><br><br></div></div><div class = 'product' style = 'border-color: rgb(3, 211, 252); background-color: rgba(3, 211, 252, 0.4)'><h3>Electric Vehicle</h3><div class = 'my-3 mx-auto' style = 'outline: 1px solid red; width: 150px; height: 30vh'></div><div>Description<br><br><br><br><br><br><br></div></div><div class = 'product' style = 'border-color: rgb(3, 252, 123); background-color: rgb(3, 252, 123)'><h3>Vaccine</h3><div class = 'my-3 mx-auto' style = 'outline: 1px solid red; width: 150px; height: 30vh'></div><div>Description<br><br><br><br><br><br><br></div></div></div>");
+			$(".product").click(() => {
+				
+			});
+ 		}
+ 		var joinModal = new bootstrap.Modal(document.getElementById("joinClass"));
+ 		var sendModal = new bootstrap.Modal(document.getElementById("sendRequest"));
+ 		var requestModal = new bootstrap.Modal(document.getElementById("teamRequest"));
+ 		var unicorn;
+		$.getJSON("../unicorn.json").always(function(data) {
+			unicorn = data;
+		});
+		$(() => {
+			firebase.auth().onAuthStateChanged((user) => {
+				if (!user) {
+					if (!transition) {
+						window.open("../login.html", "_self");
+					}
+				} else {
+					db.collection("accounts").doc(user.uid).get().then((a) => {
+						name = a.data().name;
+						code = a.data().class
+						$(".navbar-text.ms-auto").html("Welcome, " + name);
+						socket = io("http://stemunicorn.herokuapp.com");
+						socket.once("connect", () => {
+							socket.on("update", (online) => {
+								db.collection("accounts").where("class", "==", a.data().class).get().then((qS) => {
+									$("#listOnline").empty();
+									qS.forEach((d) => {
+										if (!d.data().teacher) {
+											$("#listOnline").append("<div class = 'student'>" + d.data().name + "</div>");
+											if (typeof online[d.id] != "undefined") {
+												$("#listOnline .student:last-child").addClass("active");
+											}
+										}
+									});
+								});
+							});
+							db.collection("accounts").where("class", "==", a.data().class).onSnapshot((qS) => {
+								socket.emit("online", { uid: user.uid, name: name, class: a.data().class });
+							});
+						});
+						socket.once("connect", () => {
+							socket.emit("online", { uid: user.uid, name: name, class: a.data().class });
+							db.collection("classes").doc(code).onSnapshot((c) => {
+								if (c.data().status == 0) {
+									status = 0;
+									$("#black").animate({ "left": "-200vw" }, 600);
+								} else if (c.data().status == 1) {
+									if (status == 0) {
+										$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+										setTimeout(() => {
+											db.collection("accounts").doc(user.uid).update({ status: 1 });
+											$("body > .container-fluid").html("<h4 class = 'text-center' style = 'cursor: pointer'>Video: Introduction to STEM Unicorn</h4>");
+											$("#black").animate({ left: "-200vw" }, 600);
+											$("h4").click(() => {
+												$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+												setTimeout(() => {
+													beginSelection();
+													$("#black").animate({ left: "-200vw" }, 600);
+												}, 600);
+											});
+										}, 600);
+									} else {
+										db.collection("accounts").doc(user.uid).update({ status: 1 });
+										$("body > .container-fluid").html("<h4 class = 'text-center' style = 'cursor: pointer'>Video: Introduction to STEM Unicorn</h4>");
+										$("h4").click(() => {
+											$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+											setTimeout(() => {
+												beginSelection()
+												$("#black").animate({ left: "-200vw" }, 600);
+											}, 600);
+										});
+										$("#black").animate({ left: "-200vw" }, 600);
+									}
+								} else if (c.data().status == 3) {
+									requestModal.hide();
+									if (status == 2) {
+										$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+										setTimeout(() => {
+											db.collection("accounts").doc(user.uid).update({ status: 3 });
+											$("body > .container-fluid").html("<h4 class = 'text-center' style = 'cursor: pointer'>Video: The Power of STEM</h4>");
+											$("#black").animate({ left: "-200vw" }, 600);
+											$("h4").click(() => {
+												$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+												setTimeout(() => {
+													productSelection();
+													$("#black").animate({ left: "-200vw" }, 600);
+												}, 600);
+											});
+										}, 600);
+									} else {
+										db.collection("accounts").doc(user.uid).update({ status: 3 });
+										$("body > .container-fluid").html("<h4 class = 'text-center' style = 'cursor: pointer'>Video: The Power of STEM</h4>");
+										$("h4").click(() => {
+											$("#black").css("left", "100vw").animate({ left: "-50vw" }, 600);
+											setTimeout(() => {
+												productSelection();
+												$("#black").animate({ left: "-200vw" }, 600);
+											}, 600);
+										});
+										$("#black").animate({ left: "-200vw" }, 600);
+									}
+								}
+							});
+						});
+					});
+				}
+			});
+		});
+		$("#logOut").click(function() {
+			$("#black").hide().css("left", "-50vw").fadeIn(600, () => {
+				transition = true;
+				firebase.auth().signOut().then(() => {
+					window.open("../login.html", "_self");
+				});
+			});
+		});
+	</script>
+</body>
+</html>

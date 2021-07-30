@@ -10,9 +10,9 @@
 			font-family: Lato, sans-serif;
 		}
 		body {
-			background-image: radial-gradient(circle, #ffd37a 30%, #ffaa00);
 			color: white;
 			height: 100vh;
+			transition: background-image 0.5s;
 		}
 		#loginPanel {
 			background-color: rgba(120, 120, 120, 0.5);
@@ -21,39 +21,283 @@
 		.form-floating, .form-floating * { 
 			position: relative;
 			color: #212529;
+			transition: border-radius 0.5s, margin 0.5s, top 0.5s;
+		}
+		input.is-invalid, input.is-invalid+label {
+			z-index: 3;
+		}
+		input.is-invalid+label {
+			opacity: 1 !important;
+			color: #dc3545;
 		}
 		input:focus, input:focus+label {
-			z-index: 5;
+			z-index: 51;
 		}
-		.btn-primary {
+		.form-check {
+			margin-top: 0.5rem;
+			transition: transform 0.5s, margin 0.5s, height 0.5s;
+			z-index: -1;
+		}
+		.hide {
+			margin-top: 0;
+			margin-bottom: 0;
+			transform: scale(0);
+		}
+		#loginButton {
 			background-color: #2000ed;
 			border-color: #1900ba;
+			transition: background-color 0.5s, border-color 0.5s;
+		}
+		#black {
+			position: fixed;
+			left: -50vw;
+			top: 0;
+			width: 200vw;
+			height: 100vh;
+			background-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent 100%);
+			z-index: 100;
+			cursor: wait;
+		}
+		.background {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			z-index: -5;
+			transition: opacity 0.5s;
+		}
+		#background1 {
+			background-image: radial-gradient(circle, #ffd37a 30%, #ffaa00);
+		}
+		#background2 {
+			background-image: radial-gradient(circle, #5441cc 30%, #0b0052);
+			opacity: 0;
+		}
+		.notrans {
+			transition: 0 !important;
 		}
 	</style>
 	<meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
-<body class = "d-flex flex-column justify-content-center align-items-center">
-	<div id = "loginPanel" class = "px-5 py-4 text-center my-auto">
-		<h5 class = "display-5">STEM Unicorn</h5>
-		<hr>
-		<div class = "form-floating">
-			<input type = "email" class = "form-control" id = "loginEmail" placeholder = " " style = "border-bottom-left-radius: 0; border-bottom-right-radius: 0">
-			<label for = "loginEmail">Email address</label>
+<body>
+	<div id = "black"></div>
+	<div class = "background" id = "background1"></div>
+	<div class = "background" id = "background2"></div>
+	<div class = "d-flex flex-column justify-content-center align-items-center" style = "min-height: 100vh">
+		<div id = "loginPanel" class = "px-5 py-4 text-center my-5">
+			<h5 class = "display-5">STEM Unicorn</h5>
+			<hr>
+			<p>Welcome back!</p>
+			<div class = "form-floating" style = "position: relative; z-index: 50">
+				<input type = "email" class = "form-control" id = "loginEmail" placeholder = " " style = "border-bottom-left-radius: 0; border-bottom-right-radius: 0">
+				<label for = "loginEmail">Email address</label>
+			</div>
+			<div class = "form-floating" style = "top: -1px; min-height: 3.5rem">
+				<input type = "password" class = "form-control" id = "loginPassword" placeholder = " " style = "border-top-left-radius: 0; border-top-right-radius: 0">
+				<label for = "loginPassword">Password</label>
+			</div>
+			<div class = "form-check">
+				<input class = "form-check-input float-none me-2" type = "checkbox" value = "" id = "loginRemember">
+				<label class = "form-check-label" for = "loginRemember">Remember me</label>
+			</div>
+			<p class = "mt-3"><button class = "btn btn-primary" id = "loginButton">Login</button></p>
+			<p class = "mb-0">No account yet? <a href = "#register" id = "linkRegister" class = "link-light">Register here.</a></p>
 		</div>
-		<div class = "form-floating" style = "top: -1px">
-			<input type = "password" class = "form-control" id = "loginPassword" placeholder = " " style = "border-top-left-radius: 0; border-top-right-radius: 0">
-			<label for = "loginPassword">Password</label>
-		</div>
-		<div class = "form-check mt-2">
-			<input class = "form-check-input float-none me-2" type = "checkbox" value = "" id = "loginRemember">
-			<label class = "form-check-label" for = "loginRemember">Remember me</label>
-		</div>
-		<p class = "mt-3"><a class = "btn btn-primary" href = "dashboard.html">Login</a></p>
-		<p class = "mb-0">No account yet? <a href = "register.html" class = "link-light">Register here.</a></p>
 	</div>
 	<script src = "jquery-3.6.0.min.js"></script>
 	<script src = "bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"></script>
+	<script src = "../bootstrap-5.0.1-dist/js/bootstrap.bundle.min.js"></script>
+	<script src = "https://www.gstatic.com/firebasejs/8.7.1/firebase.js"></script>
 	<script>
+		var firebaseConfig = {
+		    apiKey: "AIzaSyCXHZy-JwPN7xg40bs42AXDRZ1yE0TE3bw",
+		    authDomain: "stemunicorn.firebaseapp.com",
+		    projectId: "stemunicorn",
+		    storageBucket: "stemunicorn.appspot.com",
+		    messagingSenderId: "797956205598",
+		    appId: "1:797956205598:web:00753c21e03763eea5520f"
+		};
+ 		firebase.initializeApp(firebaseConfig);
+ 		var db = firebase.firestore();
+ 		var transition = false;
+ 		var code = "";
+		stateChange(null, true);
+		window.onhashchange = stateChange;
+		function stateChange(e, notrans = false) {
+			if (location.hash == "#register") {
+				document.title = "STEM Unicorn - Register";
+				var dur = 500;
+				if (notrans) {
+					$("*").addClass("notrans");
+					dur = 0;
+					setTimeout(() => { $("*").removeClass("notrans") }, 500);
+				}
+				$("#loginEmail").attr("type", "text").css("border-bottom-left-radius", "0.25rem").css("border-bottom-right-radius", "0.25rem");
+				$(".form-floating:has(#loginPassword)").css("top", "calc(-3.5rem - 2px)").css("max-height", "0").animate({ "min-height": "0" }, dur, function() { $(this).hide() });
+				$("#loginEmail+label").html("Class code");
+				$("input").removeClass("is-invalid");
+				// $("#loginPassword").css("border-top-left-radius", "0.25rem").css("border-top-right-radius", "0.25rem");
+				// $("<div class = 'form-floating' style = 'max-height: 0'><input type = 'text' class = 'form-control' id = 'registerFirst' placeholder = ' '><label for = 'registerFirst'>First name</label></div><div class = 'form-floating mt-3' style = 'max-height: 0'><input type = 'text' class = 'form-control' id = 'registerLast' placeholder = ' '><label for = 'registerLast'>Last name</label></div>").insertAfter("p:first-of-type").animate({ "max-height": "3.5rem" }, dur);
+				$("#loginButton").html("Register").css("background-color", "#e68e00").css("border-color", "#bd7500").css("color", "white").removeClass("btn-primary").addClass("btn-warning");
+				$("#background1").css("opacity", "0");
+				$("#background2").css("opacity", "1");
+				$(".form-check").css("height", "0").addClass("hide").animate({ "min-height": "0" }, dur, function() { $(this).hide() });
+				$("p.mb-0").html("Have an account already? <a href = '#login' id = 'linkRegister' class = 'link-light'>Login here.</a>");
+				$("p:first-of-type").html("Welcome to STEM Unicorn!");
+			} else if (!notrans) {
+				document.title = "STEM Unicorn - Login";
+				$("#loginEmail").css("border-bottom-left-radius", "0").css("border-bottom-right-radius", "0").removeClass("my-3").removeClass("is-invalid").attr("type", "text");
+				$(".form-floating:has(#loginPassword)").show().css("top", "-1px").animate({ "min-height": "3.5rem" }, dur);
+				$("#loginEmail+label").html("Email address");
+				$("input").removeClass("is-invalid");
+				// $("#loginPassword").css("border-top-left-radius", "0").css("border-top-right-radius", "0");
+				// $(".form-floating:nth-of-type(1), .form-floating:nth-of-type(2)").animate({ "max-height": "0" }, dur, function() { $(this).remove(); });
+				$("#loginButton").html("Login").css("background-color", "#2000ed").css("border-color", "#1900ba").css("color", "white").removeClass("btn-warning").addClass("btn-primary");
+				$("#background1").css("opacity", "1");
+				$("#background2").css("opacity", "0");
+				$(".form-check").show().css("height", "").animate({ "min-height": "1.5rem" }, dur).removeClass("hide");
+				$("p.mb-0").html("No account yet? <a href = '#register' id = 'linkRegister' class = 'link-light'>Register here.</a>");
+				$("p:first-of-type").html("Welcome back!");
+			}
+		};
+		$("#loginButton").click(function() {
+			var error = false;
+			if ($("#loginEmail").val() == "") {
+				error = true;
+				$("#loginEmail").addClass("is-invalid");
+			} else {
+				$("input").removeClass("is-invalid");
+				$("#loginEmail+label").html(location.hash == "#register" ? "Class code" : "Email address");
+			}
+			if ($("#loginPassword").val() == "" && (location.hash != "#register" || code != "")) {
+				error = true;
+				$("#loginPassword").addClass("is-invalid");
+			} else if (code != "" && $("#loginPassword").val().length < 8) {
+				error = true;
+				$("#loginPassword").addClass("is-invalid");
+				$("#loginPassword+label").html("Password is too short");
+			} else if (code != "" && $("#loginPassword").val().length > 30) {
+				error = true;
+				$("#loginPassword").addClass("is-invalid");
+				$("#loginPassword+label").html("Password is too long");
+			} else {
+				$("#loginPassword").removeClass("is-invalid");
+				$("#loginPassword+label").html("Password");
+			}
+			if (!error) {
+				$("input").attr("disabled", "true");
+				$("#loginButton").attr("disabled", "true").html("<span class = 'spinner-border spinner-border-sm'></span>");
+				$("p.mb-0").addClass("invisible");
+				if (code != "") {
+					firebase.auth().createUserWithEmailAndPassword($("#loginEmail").val(), $("#loginPassword").val()).then(() => {
+						db.collection("accounts").doc(firebase.auth().currentUser.uid).set({ "email": $("#loginEmail").val(), "name": $("#registerFirst").val(), "last": $("#registerLast").val(), teacher: false, status: 0, character: -1, class: code, created: firebase.firestore.Timestamp.fromDate(new Date()), selection: 0 }).then(() => {
+							$("#black").show().css("left", "100vw").animate({ left: "-50vw" }, 600);
+							setTimeout(() => {
+								window.open("v2/level1.html", "_self");
+							}, 600);
+						})
+					}).catch((error) => {
+						transition = false;
+						$("input").removeAttr("disabled");
+						$("p.mb-0").removeClass("invisible");
+						$("#loginButton").removeAttr("disabled").html("Register");
+						switch (error.code) {
+							case "auth/email-already-in-use":
+								$("#loginEmail").focus().addClass("is-invalid");
+								$("#loginEmail+label").html("Email is taken");
+								break;
+							case "auth/invalid-email":
+								$("#loginEmail").focus().addClass("is-invalid");
+								break;
+							case "auth/weak-password":
+							default:
+								$("#loginPassword").focus().addClass("is-invalid");
+								break;
+						}
+					});
+				} else if (location.hash == "#register") {
+					transition = null;
+					db.collection("classes").doc($("#loginEmail").val()).get().then((c) => {
+						$("input").removeAttr("disabled");
+						if (!c.exists) {
+							transition = false;
+							$("p.mb-0").removeClass("invisible");
+							$("#loginButton").removeAttr("disabled").html("Register");
+							$("#loginEmail").focus().addClass("is-invalid");
+						} else {
+							code = $("#loginEmail").val();
+							$(".form-floating:has(#loginEmail), p:first-of-type").animate({ opacity: 0 }, 500);
+							$("#loginButton").animate({ opacity: 0 }, 500, () => {
+								setTimeout(() => {
+									$("p:first-of-type").html(c.data().teacher + "<br>" + c.data().name + "<br>" + c.data().school);
+									$("#loginEmail+label").html("Email address");
+									$("#loginEmail").val("").css("border-bottom-left-radius", "0.25rem").css("border-bottom-right-radius", "0.25rem").addClass("my-3");
+									$(".form-floating:has(#loginEmail), #loginButton, p:first-of-type").animate({ opacity: 1 }, 500);
+									$(".form-floating:has(#loginPassword)").show().css("top", "-1px").animate({ "min-height": "3.5rem" }, 350);
+									$("#loginPassword").css("border-top-left-radius", "0.25rem").css("border-top-right-radius", "0.25rem");
+									$("<div class = 'form-floating' style = 'max-height: 0'><input type = 'text' class = 'form-control' id = 'registerFirst' placeholder = ' '><label for = 'registerFirst'>First name</label></div><div class = 'form-floating mt-3' style = 'max-height: 0'><input type = 'text' class = 'form-control' id = 'registerLast' placeholder = ' '><label for = 'registerLast'>Last name</label></div>").insertAfter("p:first-of-type").animate({ "max-height": "3.5rem" }, 500);
+									$("p.mb-0").remove();
+									$("#loginButton").removeAttr("disabled").html("Register");
+								}, 100);
+							});
+						}
+					});
+				} else {
+					transition = true;
+					firebase.auth().signInWithEmailAndPassword($("#loginEmail").val(), $("#loginPassword").val()).then(() => {
+						firebase.auth().setPersistence($("#loginRemember").is(":checked") ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION);
+					}).catch((error) => {
+						transition = false;
+						$("input").removeAttr("disabled");
+						$("p.mb-0").removeClass("invisible");
+						$("#loginButton").removeAttr("disabled").html("Login");
+						switch (error.code) {
+							case "auth/user-not-found":
+							case "auth/invalid-email":
+								$("#loginEmail").focus().addClass("is-invalid");
+								break;
+							default:
+								$("#loginPassword").focus().addClass("is-invalid");
+								break;
+						}
+					});
+				}
+			}
+		});
+		$("body").keydown(function(e) {
+			if ($("input").is(":focus") && e.keyCode == 13) {
+				$("#loginButton").trigger("click");
+			}
+		});
+		$(() => {
+			firebase.auth().onAuthStateChanged((user) => {
+				if (user) {
+					if (transition) {
+						$("#black").show().css("left", "100vw").animate({ left: "-50vw" }, 600);
+						setTimeout(() => {
+							db.collection("accounts").doc(user.uid).get().then((u) => {
+								if (u.data().teacher) {
+									window.open("teacher.html", "_self");
+								} else {
+									window.open("dashboard.html", "_self");
+								}
+							});
+						}, 600);
+					} else if (transition == false) {
+						db.collection("accounts").doc(user.uid).get().then((u) => {
+							if (u.data().teacher) {
+								window.open("teacher.html", "_self");
+							} else {
+								window.open("dashboard.html", "_self");
+							}
+						});
+					}
+				} else {
+					$("#black").css("left", "-50vw").fadeOut(600);
+				}
+			});
+		});
 	</script>
 </body>
 </html>
