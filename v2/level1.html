@@ -393,7 +393,7 @@
  			db.collection("accounts").doc(firebase.auth().currentUser.uid).update({ status: 4 });
 			$("body > .container-fluid").html("<h4 class = 'text-center'>Product Selection</h4><div id = 'productSelect' class = 'w-75 d-flex mx-auto'><div class = 'product' style = 'border-color: rgb(215, 3, 252); background-color: rgba(215, 3, 252, 0.4)'><h3>Delivery Robot</h3><div class = 'my-3 mx-auto' style = 'outline: 1px solid red; width: 150px; height: 30vh'></div><div>Description<br><br><br><br><br><br><br></div></div><div class = 'product' style = 'border-color: rgb(3, 211, 252); background-color: rgba(3, 211, 252, 0.4)'><h3>Electric Vehicle</h3><div class = 'my-3 mx-auto' style = 'outline: 1px solid red; width: 150px; height: 30vh'></div><div>Description<br><br><br><br><br><br><br></div></div><div class = 'product' style = 'border-color: rgb(3, 252, 123); background-color: rgb(3, 252, 123)'><h3>Vaccine</h3><div class = 'my-3 mx-auto' style = 'outline: 1px solid red; width: 150px; height: 30vh'></div><div>Description<br><br><br><br><br><br><br></div></div></div>");
 			$(".product").click(() => {
-				
+
 			});
  		}
  		var joinModal = new bootstrap.Modal(document.getElementById("joinClass"));
@@ -414,7 +414,7 @@
 						name = a.data().name;
 						code = a.data().class
 						$(".navbar-text.ms-auto").html("Welcome, " + name);
-						socket = io("http://stemunicorn.herokuapp.com");
+						socket = io("https://stemunicorn.herokuapp.com");
 						socket.once("connect", () => {
 							socket.on("update", (online) => {
 								db.collection("accounts").where("class", "==", a.data().class).get().then((qS) => {

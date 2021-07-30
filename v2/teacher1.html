@@ -209,7 +209,7 @@
 								window.open("../teacher.html", "_self");
 							} else {
 								var online;
-								$.ajax({ url: "http://stemunicorn.herokuapp.com/online?class=" + selected }).done((d) => {
+								$.ajax({ url: "https://stemunicorn.herokuapp.com/online?class=" + selected }).done((d) => {
 									online = d;
 									db.collection("accounts").where("class", "==", selected).get().then((qS) => {
 										qS.forEach((d) => {
@@ -224,11 +224,11 @@
 										});
 									});
 								});
-								socket = io("http://stemunicorn.herokuapp.com");
+								socket = io("https://stemunicorn.herokuapp.com");
 								socket.once("connect", () => {
 									socket.on("update", (online) => {
 										var online;
-										$.ajax({ url: "http://stemunicorn.herokuapp.com/online?class=" + selected }).done((d) => {
+										$.ajax({ url: "https://stemunicorn.herokuapp.com/online?class=" + selected }).done((d) => {
 											online = d;
 											db.collection("accounts").where("class", "==", selected).get().then((qS) => {
 												$("#waitingList tbody").empty();
